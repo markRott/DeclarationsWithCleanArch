@@ -1,0 +1,14 @@
+apply plugin: 'java-library'
+
+dependencies {
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJava}"
+    implementation "javax.inject:javax.inject:${rootProject.ext.javaxInject}"
+}
+
+//sourceCompatibility = "1.7"
+//targetCompatibility = "1.7"
