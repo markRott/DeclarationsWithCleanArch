@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DataOnSubmittedDeclarations</string>
+    <string name="no_data">Нет данных. Ввведите в строке поиска  фамилию/имя/отчество</string>
+</resources>
