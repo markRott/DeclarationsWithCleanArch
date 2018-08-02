@@ -16,9 +16,47 @@ buildscript {
 }
 
 allprojects {
+
     repositories {
         google()
         jcenter()
+    }
+
+    ext {
+
+        versionCode = 1
+        minSdkVersion = 21
+        targetSdkVersion = 26
+        compileSdkVersion = 26
+
+        versionName = "1.0"
+        buildToolsVersion = "26.0.0"
+        supportLibVersion = "26.0.0-alpha1"
+
+        gson = "2.0.2"
+        converterGson = "2.3.0"
+
+        rxJava = "2.2.0"
+        rxAndroid = "2.0.2"
+        rxJavaAdapter = "1.0.0"
+
+        javaxInject = "1"
+        retrofit = "2.3.0"
+
+        dagger2 = "2.11"
+        daggerCompiler = "2.11"
+
+        butterknife = "8.8.1"
+
+        moxy = "1.5.3"
+        moxyCompiler = "1.5.3"
+        moxyAppCompat = "1.5.3"
+
+        picasso = "2.5.2"
+        cicerone = "2.1.0"
+
+        debugCompileLeakcanary = "1.5.2"
+        releaseCompileLeakcanary = "1.5.2"
     }
 }
 
