@@ -5,5 +5,5 @@ import io.reactivex.Flowable;
 
 public interface PersonRepository {
 
-    Flowable<PersonsModel> fetchPersonsByName(final String name);
+    Flowable<PersonsModel> fetchPersonsByName(final String personName);
 }

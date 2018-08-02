@@ -1,6 +1,7 @@
 package app.com.domain.models;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 public class PersonsModel implements Serializable {
@@ -28,7 +29,7 @@ public class PersonsModel implements Serializable {
     public String toString() {
         return "PersonsModel{" +
                 "pageModel=" + pageModel +
-                ", items=" + items +
+                ", items=" + Arrays.toString(items.toArray()) +
                 '}';
     }
 }

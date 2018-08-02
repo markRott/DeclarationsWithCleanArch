@@ -1,6 +1,10 @@
 package app.com.dataonsubmitteddeclarations.search;
 
-public interface SearchContract {
+import com.arellomobile.mvp.MvpView;
+
+import app.com.domain.models.PersonsModel;
+
+public interface SearchContract extends MvpView{
 
     void showProgress();
 
@@ -10,4 +14,5 @@ public interface SearchContract {
 
     void hideNoDataView();
 
+    void renderPersonsData(PersonsModel personsModel);
 }

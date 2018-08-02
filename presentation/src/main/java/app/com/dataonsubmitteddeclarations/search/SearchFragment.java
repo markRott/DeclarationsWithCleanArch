@@ -3,7 +3,6 @@ package app.com.dataonsubmitteddeclarations.search;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import app.com.dataonsubmitteddeclarations.R;
+import app.com.domain.models.PersonsModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class SearchFragment extends Fragment implements SearchContract {
+public class SearchFragment extends MvpAppCompatFragment implements SearchContract {
 
     @BindView(R.id.edt_search)
     EditText edtSearch;
@@ -27,6 +30,9 @@ public class SearchFragment extends Fragment implements SearchContract {
     ViewGroup vgNoData;
     @BindView(R.id.prg_search)
     ProgressBar prgSearch;
+
+    @InjectPresenter
+    SearchPresenter searchPresenter;
 
     private Unbinder unbinder;
 
@@ -52,6 +58,7 @@ public class SearchFragment extends Fragment implements SearchContract {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        searchPresenter.fetchPersonsDataByName("АЛЛА ВІКТОРІВНА КУРОЧКІНА");
     }
 
     @Override
@@ -83,5 +90,10 @@ public class SearchFragment extends Fragment implements SearchContract {
     @Override
     public void hideNoDataView() {
         vgNoData.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void renderPersonsData(PersonsModel personsModel) {
+        System.out.println("personsModel = " + personsModel);
     }
 }
