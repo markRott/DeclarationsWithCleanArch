@@ -13,3 +13,5 @@
 /.idea/
 /presentation/build/
 /presentation/presentation.iml
+/data/data.iml
+/data/build/
