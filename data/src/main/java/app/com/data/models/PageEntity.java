@@ -1,11 +1,14 @@
-package app.com.domain.models;
+package app.com.data.models;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
-public class PageDomainModel implements Serializable {
+public class PageEntity {
 
+    @SerializedName("totalItems")
     private String totalItems;
+    @SerializedName("batchSize")
     private int batchSize;
+    @SerializedName("currentPage")
     private int currentPage;
 
     public String getTotalItems() {
@@ -34,7 +37,7 @@ public class PageDomainModel implements Serializable {
 
     @Override
     public String toString() {
-        return "PageDomainModel{" +
+        return "PageEntity{" +
                 "totalItems='" + totalItems + '\'' +
                 ", batchSize=" + batchSize +
                 ", currentPage=" + currentPage +

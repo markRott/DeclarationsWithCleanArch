@@ -2,7 +2,7 @@ package app.com.domain.models;
 
 import java.io.Serializable;
 
-public class PersonDomainModel implements Serializable {
+public class PersonModel implements Serializable {
 
     private String id;
     private String linkPdf;
@@ -61,7 +61,7 @@ public class PersonDomainModel implements Serializable {
 
     @Override
     public String toString() {
-        return "PersonDomainModel{" +
+        return "PersonModel{" +
                 "linkPdf='" + linkPdf + '\'' +
                 ", position='" + position + '\'' +
                 ", placeOfWork='" + placeOfWork + '\'' +
