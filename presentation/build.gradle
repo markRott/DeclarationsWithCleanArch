@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
 
-//    compileSdkVersion 27
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
@@ -52,4 +51,8 @@ dependencies {
 
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJava}"
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroid}"
+
+    implementation "com.arello-mobile:moxy:${rootProject.ext.moxy}"
+    annotationProcessor "com.arello-mobile:moxy-compiler:${rootProject.ext.moxyCompiler}"
+    implementation "com.arello-mobile:moxy-app-compat:${rootProject.ext.moxyAppCompat}"
 }

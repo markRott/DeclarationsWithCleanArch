@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations;
+package app.com.dataonsubmitteddeclarations.search;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import app.com.dataonsubmitteddeclarations.search.SearchContract;
+import app.com.dataonsubmitteddeclarations.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
