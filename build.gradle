@@ -25,13 +25,13 @@ allprojects {
     ext {
 
         versionCode = 1
-        minSdkVersion = 21
-        targetSdkVersion = 26
-        compileSdkVersion = 26
+        minSdkVersion = 17
+        targetSdkVersion = 27
+        compileSdkVersion = 27
 
         versionName = "1.0"
         buildToolsVersion = "26.0.0"
-        supportLibVersion = "26.0.0-alpha1"
+        supportLibVersion = "27.1.1"
 
         gson = "2.0.2"
         converterGson = "2.3.0"
