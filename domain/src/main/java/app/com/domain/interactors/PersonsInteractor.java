@@ -4,6 +4,7 @@ import app.com.domain.interfaces.PersonRepository;
 import app.com.domain.interfaces.ThreadContract;
 import app.com.domain.models.PersonsModel;
 import io.reactivex.Flowable;
+import io.reactivex.functions.Consumer;
 
 public class PersonsInteractor {
 

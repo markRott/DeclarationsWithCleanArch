@@ -55,4 +55,11 @@ dependencies {
     implementation "com.arello-mobile:moxy:${rootProject.ext.moxy}"
     annotationProcessor "com.arello-mobile:moxy-compiler:${rootProject.ext.moxyCompiler}"
     implementation "com.arello-mobile:moxy-app-compat:${rootProject.ext.moxyAppCompat}"
+
+    //dagger 2
+    implementation "com.google.dagger:dagger:${rootProject.ext.dagger}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${rootProject.ext.dagger}"
+    implementation "com.google.dagger:dagger-android:${rootProject.ext.dagger}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${rootProject.ext.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${rootProject.ext.dagger}"
 }

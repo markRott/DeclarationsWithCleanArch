@@ -1,4 +1,4 @@
-package app.com.data;
+package app.com.data.network;
 
 import app.com.data.models.PersonsEntity;
 import io.reactivex.Flowable;
