@@ -1,6 +1,7 @@
 package app.com.dataonsubmitteddeclarations;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import app.com.dataonsubmitteddeclarations.search.SearchFragment;
@@ -11,15 +12,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        openSearchFragment();
+        if (savedInstanceState == null) {
+            openFragment(SearchFragment.newInstance());
+        }
     }
 
-    private void openSearchFragment() {
-        final String tag = SearchFragment.class.getSimpleName();
+    public void openFragment(Fragment fragment) {
+        final String tag = fragment.getClass().getSimpleName();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_container, SearchFragment.newInstance(), tag)
+                .replace(R.id.main_container, fragment, tag)
                 .commit();
     }
 }

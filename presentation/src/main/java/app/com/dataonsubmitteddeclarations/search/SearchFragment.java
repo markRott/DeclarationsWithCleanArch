@@ -15,8 +15,11 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.concurrent.TimeUnit;
 
+import app.com.dataonsubmitteddeclarations.MainActivity;
 import app.com.dataonsubmitteddeclarations.R;
 import app.com.dataonsubmitteddeclarations.base.BaseFragment;
+import app.com.dataonsubmitteddeclarations.pdf.PdfViewerFragment;
+import app.com.domain.models.PersonModel;
 import app.com.domain.models.PersonsModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-public class SearchFragment extends BaseFragment implements SearchContract {
+public class SearchFragment extends BaseFragment implements SearchContract, TouchPdfIconListener<PersonModel> {
 
     @BindView(R.id.edt_search)
     EditText edtSearch;
@@ -51,6 +54,13 @@ public class SearchFragment extends BaseFragment implements SearchContract {
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        setRetainInstance(true);
+        System.out.println("savedInstanceState = " + savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(
@@ -72,6 +82,7 @@ public class SearchFragment extends BaseFragment implements SearchContract {
     private void initRecyclerView() {
         if (recyclerView != null) {
             personAdapter = new PersonAdapter();
+            personAdapter.setTouchPdfIconListener(this);
             recyclerView.setAdapter(personAdapter);
         }
     }
@@ -145,5 +156,13 @@ public class SearchFragment extends BaseFragment implements SearchContract {
     @Override
     public void renderPersonsData(PersonsModel personsModel) {
         personAdapter.setData(personsModel.getItems());
+    }
+
+    @Override
+    public void touchPdfIcon(PersonModel personModel, int position) {
+        if (personModel != null && getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.openFragment(PdfViewerFragment.newInstance(personModel.getLinkPdf()));
+        }
     }
 }

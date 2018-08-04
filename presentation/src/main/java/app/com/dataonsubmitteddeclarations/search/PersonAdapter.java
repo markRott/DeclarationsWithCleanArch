@@ -16,6 +16,8 @@ import butterknife.ButterKnife;
 
 public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapter.PersonItemHolder> {
 
+    private TouchPdfIconListener<PersonModel> touchPdfIconListener;
+
     @NonNull
     @Override
     public PersonItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,13 +39,28 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         holder.lastName.setText(model.getLastName());
         holder.position.setText(model.getPosition());
         holder.placeOfWork.setText(model.getPlaceOfWork());
+
         fillIcons(holder, model);
+        setupPdfIconClickListener(holder, model, position);
     }
 
     private void fillIcons(PersonItemHolder holder, final PersonModel model) {
         holder.ivFavorite.setImageResource(model.isFavorite() ?
                 R.drawable.ic_favorite : R.drawable.ic_unfavorite);
         holder.ivPdf.setImageResource(R.drawable.ic_pdf);
+    }
+
+    private void setupPdfIconClickListener(
+            final PersonItemHolder holder,
+            final PersonModel model,
+            int position) {
+        if (touchPdfIconListener != null) {
+            holder.ivPdf.setOnClickListener(v -> touchPdfIconListener.touchPdfIcon(model, position));
+        }
+    }
+
+    public void setTouchPdfIconListener(TouchPdfIconListener<PersonModel> touchPdfIconListener) {
+        this.touchPdfIconListener = touchPdfIconListener;
     }
 
     static class PersonItemHolder extends RecyclerView.ViewHolder {
