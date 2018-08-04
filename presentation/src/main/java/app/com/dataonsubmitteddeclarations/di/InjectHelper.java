@@ -3,6 +3,7 @@ package app.com.dataonsubmitteddeclarations.di;
 import app.com.dataonsubmitteddeclarations.MyApp;
 import app.com.dataonsubmitteddeclarations.di.components.DaggerMainAppComponent;
 import app.com.dataonsubmitteddeclarations.di.components.MainAppComponent;
+import app.com.dataonsubmitteddeclarations.di.modules.CompositeDisposableModule;
 import app.com.dataonsubmitteddeclarations.di.modules.ContextModule;
 import app.com.dataonsubmitteddeclarations.di.modules.NetworkModule;
 import app.com.dataonsubmitteddeclarations.di.modules.PersonsModule;
@@ -25,6 +26,7 @@ public class InjectHelper {
                 .threadModule(new ThreadModule())
                 .utilsModule(new UtilsModule())
                 .personsModule(new PersonsModule())
+                .compositeDisposableModule(new CompositeDisposableModule())
                 .build();
 //        return null;
     }

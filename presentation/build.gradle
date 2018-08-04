@@ -24,6 +24,11 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -38,28 +43,38 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    // SUPPORT
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation 'com.android.support:recyclerview-v7:27.1.0'
     implementation 'com.android.support:cardview-v7:27.1.0'
 
+    // BUTTERKNIFE
     implementation "com.jakewharton:butterknife:${rootProject.ext.butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${rootProject.ext.butterknife}"
 
+    // RETROFIT
     implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.converterGson}"
     implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${rootProject.ext.rxJavaAdapter}"
 
+    // RX
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJava}"
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroid}"
+    implementation "com.jakewharton.rxbinding2:rxbinding:${rootProject.ext.rxbinding}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7:${rootProject.ext.rxbinding}"
 
+    // MOXY
     implementation "com.arello-mobile:moxy:${rootProject.ext.moxy}"
     annotationProcessor "com.arello-mobile:moxy-compiler:${rootProject.ext.moxyCompiler}"
     implementation "com.arello-mobile:moxy-app-compat:${rootProject.ext.moxyAppCompat}"
 
-    //dagger 2
+    // DAGGER2
     implementation "com.google.dagger:dagger:${rootProject.ext.dagger}"
     annotationProcessor "com.google.dagger:dagger-compiler:${rootProject.ext.dagger}"
     implementation "com.google.dagger:dagger-android:${rootProject.ext.dagger}"
     annotationProcessor "com.google.dagger:dagger-android-processor:${rootProject.ext.dagger}"
     implementation "com.google.dagger:dagger-android-support:${rootProject.ext.dagger}"
+
+    // TIMBER
+    implementation "com.jakewharton.timber:timber:${rootProject.ext.timber}"
 }

@@ -2,6 +2,8 @@ package app.com.dataonsubmitteddeclarations.di.components;
 
 import javax.inject.Singleton;
 
+import app.com.dataonsubmitteddeclarations.base.BaseFragment;
+import app.com.dataonsubmitteddeclarations.di.modules.CompositeDisposableModule;
 import app.com.dataonsubmitteddeclarations.di.modules.ContextModule;
 import app.com.dataonsubmitteddeclarations.di.modules.NetworkModule;
 import app.com.dataonsubmitteddeclarations.di.modules.PersonsModule;
@@ -16,8 +18,11 @@ import dagger.Component;
         ThreadModule.class,
         UtilsModule.class,
         NetworkModule.class,
-        PersonsModule.class})
+        PersonsModule.class,
+        CompositeDisposableModule.class})
 public interface MainAppComponent {
 
     void inject(SearchPresenter searchPresenter);
+
+    void inject(BaseFragment baseFragment);
 }

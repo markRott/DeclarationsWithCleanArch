@@ -1,8 +1,10 @@
 package app.com.data.transform;
 
+import java.util.Collections;
 import java.util.List;
 
 import app.com.data.models.PageEntity;
+import app.com.data.models.PersonEntity;
 import app.com.data.models.PersonsEntity;
 import app.com.domain.models.PersonModel;
 import app.com.domain.models.PersonsModel;
@@ -29,9 +31,13 @@ public class PersonsEntityToDomainModel {
 
     private void convertPersonEntity(final PersonsEntity personsEntity,
                                      final PersonsModel personsModel) {
-
+        List<PersonModel> personModelList = null;
+        final List<PersonEntity> entities = personsEntity.getItems();
         final PersonEntityToDomainModel entityToDomain = new PersonEntityToDomainModel();
-        final List<PersonModel> personModelList = entityToDomain.transform(personsEntity.getItems());
-        personsModel.setItems(personModelList);
+        if (!entities.isEmpty()) {
+            personModelList = entityToDomain.transform(personsEntity.getItems());
+        }
+        personsModel.setItems(personModelList != null ?
+                personModelList : Collections.<PersonModel>emptyList());
     }
 }

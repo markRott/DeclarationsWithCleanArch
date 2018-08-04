@@ -39,4 +39,7 @@ dependencies {
 
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJava}"
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroid}"
+
+    // TIMBER
+    implementation "com.jakewharton.timber:timber:${rootProject.ext.timber}"
 }

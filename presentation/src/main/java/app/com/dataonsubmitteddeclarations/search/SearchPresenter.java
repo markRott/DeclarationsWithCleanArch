@@ -2,47 +2,75 @@ package app.com.dataonsubmitteddeclarations.search;
 
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 
 import javax.inject.Inject;
 
+import app.com.dataonsubmitteddeclarations.base.BasePresenter;
 import app.com.dataonsubmitteddeclarations.di.InjectHelper;
 import app.com.domain.base.BaseSubscriber;
 import app.com.domain.interactors.PersonsInteractor;
 import app.com.domain.models.PersonsModel;
+import timber.log.Timber;
 
 @InjectViewState
-public class SearchPresenter extends MvpPresenter<SearchContract> {
+public class SearchPresenter extends BasePresenter<SearchContract> {
+
+    private static final String TAG = SearchPresenter.class.getSimpleName();
 
     @Inject
     PersonsInteractor personsInteractor;
 
     @Override
     protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
         InjectHelper.getMainAppComponent().inject(this);
-        fetchPersonsDataByName("АЛЛА ВІКТОРІВНА КУРОЧКІНА");
     }
 
     public void fetchPersonsDataByName(final String personName) {
         if (personsInteractor == null) return;
-        getViewState().hideNoDataView();
-        getViewState().showProgress();
-        personsInteractor
+        startRequest();
+        disposableManager.addDisposable(personsInteractor
                 .fetchPersonsByName(personName)
                 .subscribeWith(new BaseSubscriber<PersonsModel>() {
                     @Override
                     public void onNext(PersonsModel personsModel) {
-                        if (personsModel != null) {
-                            getViewState().hideNoDataView();
-                            getViewState().hideProgress();
-                            getViewState().renderPersonsData(personsModel);
-                        }
+                        successResponse(personsModel);
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        System.out.println("fetchPersonsDataByName = " + t);
+                        Timber.e(t, "fetchPersonsDataByName ");
+                        showNoDataView();
                     }
-                });
+                }));
+    }
+
+    private void startRequest() {
+        getViewState().hideNoDataView();
+        getViewState().hideList();
+        getViewState().showProgress();
+    }
+
+    private void successResponse(PersonsModel personsModel) {
+        if (personsModel == null || personsModel.getItems().isEmpty()) {
+            showNoDataView();
+            return;
+        }
+        if (!personsModel.getItems().isEmpty()) {
+            showList();
+            getViewState().renderPersonsData(personsModel);
+        }
+    }
+
+    public void showNoDataView() {
+        getViewState().hideProgress();
+        getViewState().hideList();
+        getViewState().showNoDataView();
+    }
+
+    public void showList() {
+        getViewState().hideNoDataView();
+        getViewState().hideProgress();
+        getViewState().showList();
     }
 }

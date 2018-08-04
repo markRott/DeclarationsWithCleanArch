@@ -2,6 +2,8 @@ package app.com.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PersonsEntity {
@@ -12,7 +14,7 @@ public class PersonsEntity {
     private List<PersonEntity> items;
 
     public List<PersonEntity> getItems() {
-        return items;
+        return items == null ? Collections.<PersonEntity>emptyList() : items;
     }
 
     public void setItems(List<PersonEntity> items) {
@@ -25,5 +27,13 @@ public class PersonsEntity {
 
     public void setPage(PageEntity page) {
         this.page = page;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonsEntity{" +
+                "page=" + page +
+                ", items=" + Arrays.toString(items.toArray()) +
+                '}';
     }
 }

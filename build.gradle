@@ -34,6 +34,7 @@ allprojects {
         rxJava = "2.2.0"
         rxAndroid = "2.0.2"
         rxJavaAdapter = "1.0.0"
+        rxbinding = "2.1.1"
 
         javaxInject = "1"
         retrofit = "2.3.0"
@@ -49,6 +50,8 @@ allprojects {
 
         picasso = "2.5.2"
         cicerone = "2.1.0"
+
+        timber = "4.7.1"
 
         debugCompileLeakcanary = "1.5.2"
         releaseCompileLeakcanary = "1.5.2"

@@ -2,6 +2,7 @@ package app.com.domain.models;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PersonsModel implements Serializable {
@@ -10,7 +11,7 @@ public class PersonsModel implements Serializable {
     private List<PersonModel> items;
 
     public List<PersonModel> getItems() {
-        return items;
+        return items == null ? Collections.<PersonModel>emptyList() : items;
     }
 
     public void setItems(List<PersonModel> items) {
@@ -29,7 +30,7 @@ public class PersonsModel implements Serializable {
     public String toString() {
         return "PersonsModel{" +
                 "pageModel=" + pageModel +
-                ", items=" + Arrays.toString(items.toArray()) +
+                ", items=" + Arrays.toString(getItems().toArray()) +
                 '}';
     }
 }

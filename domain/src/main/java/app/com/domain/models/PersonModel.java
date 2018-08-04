@@ -11,6 +11,8 @@ public class PersonModel implements Serializable {
     private String lastName;
     private String firstName;
 
+    private boolean favoriteStatus;
+
     public String getLinkPdf() {
         return linkPdf;
     }
@@ -59,15 +61,24 @@ public class PersonModel implements Serializable {
         this.id = id;
     }
 
+    public boolean isFavorite() {
+        return favoriteStatus;
+    }
+
+    public void setFavoriteStatus(boolean favoriteStatus) {
+        this.favoriteStatus = favoriteStatus;
+    }
+
     @Override
     public String toString() {
         return "PersonModel{" +
-                "linkPdf='" + linkPdf + '\'' +
+                "id='" + id + '\'' +
+                ", linkPdf='" + linkPdf + '\'' +
                 ", position='" + position + '\'' +
                 ", placeOfWork='" + placeOfWork + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
-                ", id='" + id + '\'' +
+                ", favoriteStatus=" + favoriteStatus +
                 '}';
     }
 }
