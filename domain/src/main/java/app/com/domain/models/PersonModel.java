@@ -70,6 +70,21 @@ public class PersonModel implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof PersonModel)) return false;
+        PersonModel personModel = (PersonModel) o;
+        return id.equals(personModel.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + id.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "PersonModel{" +
                 "id='" + id + '\'' +

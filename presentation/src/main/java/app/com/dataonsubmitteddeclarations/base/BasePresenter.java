@@ -13,13 +13,9 @@ public abstract class BasePresenter<View extends MvpView> extends MvpPresenter<V
     protected CompositeDisposableManager disposableManager;
 
     @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-    }
-
-    @Override
     public void onDestroy() {
         disposableManager.clearCompositeDisposable();
+        disposableManager = null;
         super.onDestroy();
     }
 }

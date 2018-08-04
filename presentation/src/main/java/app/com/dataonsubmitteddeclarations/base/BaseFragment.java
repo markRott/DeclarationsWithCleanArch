@@ -25,4 +25,12 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
         disposableManager.clearCompositeDisposable();
         super.onPause();
     }
+
+    @Override
+    public void onDestroy() {
+        if (disposableManager != null) {
+            disposableManager = null;
+        }
+        super.onDestroy();
+    }
 }

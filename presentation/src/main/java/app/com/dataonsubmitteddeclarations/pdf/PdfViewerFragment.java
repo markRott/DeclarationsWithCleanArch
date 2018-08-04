@@ -8,16 +8,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import app.com.dataonsubmitteddeclarations.R;
+import app.com.dataonsubmitteddeclarations.base.BackPressedContract;
+import app.com.dataonsubmitteddeclarations.utils.ViewUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PdfViewerFragment extends Fragment {
+public class PdfViewerFragment extends Fragment implements BackPressedContract, PageLoadFinished {
 
     private static final String ARGS_PDF_URL = "pdf_url";
 
@@ -36,11 +37,6 @@ public class PdfViewerFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(
@@ -53,14 +49,22 @@ public class PdfViewerFragment extends Fragment {
         return view;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupWebView();
+    }
 
-        webView.setWebViewClient(new AppWebViewClient(this));
+    @Override
+    public void onResume() {
+        super.onResume();
+        ViewUtils.hideKeyboardFrom(getContext(), getView());
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void setupWebView() {
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new AppWebViewClient(this));
         webView.loadUrl(getPdfUrl());
     }
 
@@ -80,7 +84,13 @@ public class PdfViewerFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void finishLoading() {
+    @Override
+    public void onBackPressed() {
+        getActivity().getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    @Override
+    public void onFinishLoading() {
         if (isAdded() && prbLoadPdf != null) {
             prbLoadPdf.setVisibility(View.GONE);
         }

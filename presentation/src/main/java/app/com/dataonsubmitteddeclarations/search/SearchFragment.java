@@ -19,6 +19,7 @@ import app.com.dataonsubmitteddeclarations.MainActivity;
 import app.com.dataonsubmitteddeclarations.R;
 import app.com.dataonsubmitteddeclarations.base.BaseFragment;
 import app.com.dataonsubmitteddeclarations.pdf.PdfViewerFragment;
+import app.com.dataonsubmitteddeclarations.utils.ViewUtils;
 import app.com.domain.models.PersonModel;
 import app.com.domain.models.PersonsModel;
 import butterknife.BindView;
@@ -54,13 +55,6 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        setRetainInstance(true);
-        System.out.println("savedInstanceState = " + savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(
@@ -71,6 +65,12 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     @Override
@@ -91,6 +91,7 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
     public void onResume() {
         super.onResume();
         enableLiveSearch();
+        ViewUtils.hideKeyboardFrom(getContext(), getView());
     }
 
     private void enableLiveSearch() {
@@ -107,12 +108,6 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
                         });
 
         disposableManager.addDisposable(searchDisposable);
-    }
-
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
     }
 
     @OnClick(R.id.iv_clear_text)
@@ -148,9 +143,7 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
 
     @Override
     public void hideList() {
-        personAdapter.clear();
         recyclerView.setVisibility(View.GONE);
-        recyclerView.smoothScrollToPosition(0);
     }
 
     @Override
@@ -162,7 +155,8 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
     public void touchPdfIcon(PersonModel personModel, int position) {
         if (personModel != null && getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.openFragment(PdfViewerFragment.newInstance(personModel.getLinkPdf()));
+            mainActivity.openPdfFragment(
+                    PdfViewerFragment.newInstance(personModel.getLinkPdf()));
         }
     }
 }
