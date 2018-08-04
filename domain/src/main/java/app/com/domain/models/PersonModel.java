@@ -2,7 +2,7 @@ package app.com.domain.models;
 
 import java.io.Serializable;
 
-public class PersonDomainModel implements Serializable {
+public class PersonModel implements Serializable {
 
     private String id;
     private String linkPdf;
@@ -10,6 +10,8 @@ public class PersonDomainModel implements Serializable {
     private String placeOfWork;
     private String lastName;
     private String firstName;
+
+    private boolean favoriteStatus;
 
     public String getLinkPdf() {
         return linkPdf;
@@ -59,15 +61,39 @@ public class PersonDomainModel implements Serializable {
         this.id = id;
     }
 
+    public boolean isFavorite() {
+        return favoriteStatus;
+    }
+
+    public void setFavoriteStatus(boolean favoriteStatus) {
+        this.favoriteStatus = favoriteStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof PersonModel)) return false;
+        PersonModel personModel = (PersonModel) o;
+        return id.equals(personModel.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + id.hashCode();
+        return result;
+    }
+
     @Override
     public String toString() {
-        return "PersonDomainModel{" +
-                "linkPdf='" + linkPdf + '\'' +
+        return "PersonModel{" +
+                "id='" + id + '\'' +
+                ", linkPdf='" + linkPdf + '\'' +
                 ", position='" + position + '\'' +
                 ", placeOfWork='" + placeOfWork + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
-                ", id='" + id + '\'' +
+                ", favoriteStatus=" + favoriteStatus +
                 '}';
     }
 }

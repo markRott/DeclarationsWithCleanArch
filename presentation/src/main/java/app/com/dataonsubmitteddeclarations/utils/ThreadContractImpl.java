@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations;
+package app.com.dataonsubmitteddeclarations.utils;
 
 import app.com.domain.interfaces.ThreadContract;
 import io.reactivex.Scheduler;
