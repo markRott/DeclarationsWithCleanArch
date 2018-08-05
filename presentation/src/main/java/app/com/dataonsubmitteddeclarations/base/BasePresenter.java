@@ -5,7 +5,7 @@ import com.arellomobile.mvp.MvpView;
 
 import javax.inject.Inject;
 
-import app.com.dataonsubmitteddeclarations.utils.CompositeDisposableManager;
+import app.com.dataonsubmitteddeclarations.managers.CompositeDisposableManager;
 
 public abstract class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
 

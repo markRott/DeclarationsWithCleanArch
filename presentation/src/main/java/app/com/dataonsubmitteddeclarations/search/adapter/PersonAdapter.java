@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations.search;
+package app.com.dataonsubmitteddeclarations.search.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapter.PersonItemHolder> {
 
     private TouchPdfIconListener<PersonModel> touchPdfIconListener;
+    private TouchFavoriteListener<PersonModel> touchFavoriteListener;
 
     @NonNull
     @Override
@@ -34,14 +35,18 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
     }
 
     private void fillPersonItemData(PersonItemHolder holder, final int position) {
-        PersonModel model = getItemByPosition(position);
+        final PersonModel model = getItemByPosition(position);
+        fillViews(holder, model);
+        fillIcons(holder, model);
+        setupLikeClickListener(holder, model, position);
+        setupPdfIconClickListener(holder, model, position);
+    }
+
+    private void fillViews(PersonItemHolder holder, final PersonModel model) {
         holder.firstName.setText(model.getFirstName());
         holder.lastName.setText(model.getLastName());
         holder.position.setText(model.getPosition());
         holder.placeOfWork.setText(model.getPlaceOfWork());
-
-        fillIcons(holder, model);
-        setupPdfIconClickListener(holder, model, position);
     }
 
     private void fillIcons(PersonItemHolder holder, final PersonModel model) {
@@ -59,8 +64,21 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         }
     }
 
+    private void setupLikeClickListener(
+            final PersonItemHolder holder,
+            final PersonModel model,
+            int position) {
+        if (touchFavoriteListener != null) {
+            holder.ivFavorite.setOnClickListener(v -> touchFavoriteListener.touchFavoriteIcon(model, position));
+        }
+    }
+
     public void setTouchPdfIconListener(TouchPdfIconListener<PersonModel> touchPdfIconListener) {
         this.touchPdfIconListener = touchPdfIconListener;
+    }
+
+    public void setTouchFavoriteListener(TouchFavoriteListener<PersonModel> touchFavoriteListener) {
+        this.touchFavoriteListener = touchFavoriteListener;
     }
 
     static class PersonItemHolder extends RecyclerView.ViewHolder {

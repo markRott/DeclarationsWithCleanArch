@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations.utils;
+package app.com.dataonsubmitteddeclarations.managers;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

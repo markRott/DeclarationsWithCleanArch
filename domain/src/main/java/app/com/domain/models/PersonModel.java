@@ -11,6 +11,8 @@ public class PersonModel implements Serializable {
     private String lastName;
     private String firstName;
 
+    // custom fields
+    private String comment;
     private boolean favoriteStatus;
 
     public String getLinkPdf() {
@@ -69,6 +71,18 @@ public class PersonModel implements Serializable {
         this.favoriteStatus = favoriteStatus;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public boolean isFavoriteStatus() {
+        return favoriteStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
@@ -93,6 +107,7 @@ public class PersonModel implements Serializable {
                 ", placeOfWork='" + placeOfWork + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
+                ", comment='" + comment + '\'' +
                 ", favoriteStatus=" + favoriteStatus +
                 '}';
     }

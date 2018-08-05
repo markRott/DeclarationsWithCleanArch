@@ -1,8 +1,6 @@
 package app.com.dataonsubmitteddeclarations;
 
-import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -16,7 +14,7 @@ public class MyApp extends Application {
         super.onCreate();
 
         initTimber();
-        initLeakCanary();
+//        initLeakCanary();
         InjectHelper.initMainAppComponent(this);
     }
 

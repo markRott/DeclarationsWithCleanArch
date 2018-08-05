@@ -1,8 +1,11 @@
 package app.com.dataonsubmitteddeclarations.search;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +16,16 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import app.com.dataonsubmitteddeclarations.MainActivity;
 import app.com.dataonsubmitteddeclarations.R;
 import app.com.dataonsubmitteddeclarations.base.BaseFragment;
-import app.com.dataonsubmitteddeclarations.pdf.PdfViewerFragment;
+import app.com.dataonsubmitteddeclarations.managers.Router;
+import app.com.dataonsubmitteddeclarations.managers.RouterData;
+import app.com.dataonsubmitteddeclarations.search.adapter.PersonAdapter;
+import app.com.dataonsubmitteddeclarations.search.adapter.TouchFavoriteListener;
+import app.com.dataonsubmitteddeclarations.search.adapter.TouchPdfIconListener;
 import app.com.dataonsubmitteddeclarations.utils.ViewUtils;
 import app.com.domain.models.PersonModel;
 import app.com.domain.models.PersonsModel;
@@ -26,11 +33,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
 import timber.log.Timber;
 
-public class SearchFragment extends BaseFragment implements SearchContract, TouchPdfIconListener<PersonModel> {
+public class SearchFragment extends BaseFragment implements SearchContract,
+        TouchPdfIconListener<PersonModel>, TouchFavoriteListener<PersonModel> {
 
     @BindView(R.id.edt_search)
     EditText edtSearch;
@@ -45,14 +53,11 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
     SearchPresenter searchPresenter;
 
     private Unbinder unbinder;
-    private Disposable searchDisposable;
     private PersonAdapter personAdapter;
+    private PersonModel favoritePersonModel;
 
     public static SearchFragment newInstance() {
-        final SearchFragment fragment = new SearchFragment();
-        final Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new SearchFragment();
     }
 
     @Nullable
@@ -61,7 +66,6 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -83,6 +87,7 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
         if (recyclerView != null) {
             personAdapter = new PersonAdapter();
             personAdapter.setTouchPdfIconListener(this);
+            personAdapter.setTouchFavoriteListener(this);
             recyclerView.setAdapter(personAdapter);
         }
     }
@@ -95,19 +100,29 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
     }
 
     private void enableLiveSearch() {
-        searchDisposable =
+//        searchDisposable =
+//                RxTextView
+//                        .textChanges(edtSearch)
+//                        .skip(1)
+//                        .filter(name -> !name.toString().isEmpty())
+//                        .debounce(500, TimeUnit.MILLISECONDS)
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(name -> {
+//                            Timber.d(name.toString());
+//                            searchPresenter.fetchPersonsDataByName(name.toString());
+//                        });
+//        disposableManager.addDisposable(searchDisposable);
+        Flowable<String> stringFromInput =
                 RxTextView
                         .textChanges(edtSearch)
-                        .skip(1)
-                        .filter(name -> !name.toString().isEmpty())
                         .debounce(500, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(name -> {
-                            Timber.d(name.toString());
-                            searchPresenter.fetchPersonsDataByName(name.toString());
-                        });
-
-        disposableManager.addDisposable(searchDisposable);
+                        .filter(charSequence -> charSequence.length() > 3)
+                        .map(CharSequence::toString)
+                        .distinctUntilChanged()
+                        .publish()
+                        .autoConnect()
+                        .toFlowable(BackpressureStrategy.LATEST);
+        searchPresenter.liveSearch(stringFromInput);
     }
 
     @OnClick(R.id.iv_clear_text)
@@ -153,10 +168,39 @@ public class SearchFragment extends BaseFragment implements SearchContract, Touc
 
     @Override
     public void touchPdfIcon(PersonModel personModel, int position) {
-        if (personModel != null && getActivity() instanceof MainActivity) {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.openPdfFragment(
-                    PdfViewerFragment.newInstance(personModel.getLinkPdf()));
+        if (getManager() == null) return;
+        final RouterData data = RouterData.RouterDataBuilder
+                .builder()
+                .setFragmentManager(getManager())
+                .setPersonModel(personModel)
+                .build();
+        router.openPdfFragment(data);
+    }
+
+    private FragmentManager getManager() {
+        return getActivity().getSupportFragmentManager();
+    }
+
+    @Override
+    public void touchFavoriteIcon(PersonModel personModel, int position) {
+        if (getManager() == null) return;
+        final RouterData data = RouterData.RouterDataBuilder
+                .builder()
+                .setFragmentManager(getManager())
+                .setPersonModel(personModel)
+                .setFragment(this)
+                .build();
+        router.openFavoriteDialog(data);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Router.FAVORITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            final Bundle args = data.getExtras();
+            if (args != null) {
+                favoritePersonModel = (PersonModel) args.get(FavoriteDialogFragment.SEND_FAVORITE_MODEL);
+                Timber.d(Objects.requireNonNull(favoritePersonModel).toString());
+            }
         }
     }
 }

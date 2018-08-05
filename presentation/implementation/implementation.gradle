@@ -1,49 +1,9 @@
-apply plugin: 'com.android.application'
-
-android {
-
-    compileSdkVersion rootProject.ext.compileSdkVersion
-
-    defaultConfig {
-
-        applicationId "app.com.dataonsubmitteddeclarations"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    lintOptions {
-        abortOnError false
-    }
-
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
-    }
-}
-
-apply from: 'implementation/implementation.gradle'
-
 dependencies {
 
-    /*implementation project(':domain')
+    implementation project(':domain')
     implementation project(':data')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    testImplementation 'junit:junit:4.12'
-    //noinspection GradleCompatible
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // SUPPORT
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
@@ -78,10 +38,14 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:${rootProject.ext.dagger}"
 
     // TIMBER
-//    implementation "com.jakewharton.timber:timber:${rootProject.ext.timber}"
+    implementation "com.jakewharton.timber:timber:${rootProject.ext.timber}"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
-    // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'*/
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+
+    // TEST
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

@@ -4,35 +4,26 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import javax.inject.Inject;
+
 import app.com.dataonsubmitteddeclarations.base.BackPressedContract;
-import app.com.dataonsubmitteddeclarations.search.SearchFragment;
+import app.com.dataonsubmitteddeclarations.di.InjectHelper;
+import app.com.dataonsubmitteddeclarations.managers.Router;
+import app.com.dataonsubmitteddeclarations.managers.RouterData;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Inject
+    Router router;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        InjectHelper.getMainAppComponent().inject(this);
         if (savedInstanceState == null) {
-            openSearchFragment(SearchFragment.newInstance());
+            router.openSearchFragment(getSupportFragmentManager());
         }
-    }
-
-    public void openSearchFragment(Fragment fragment) {
-        final String tag = fragment.getClass().getSimpleName();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.main_container, fragment, tag)
-                .commit();
-    }
-
-    public void openPdfFragment(Fragment fragment) {
-        final String tag = fragment.getClass().getSimpleName();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.main_container, fragment, tag)
-                .addToBackStack(tag)
-                .commit();
     }
 
     @Override

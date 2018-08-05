@@ -10,6 +10,7 @@ import app.com.dataonsubmitteddeclarations.di.InjectHelper;
 import app.com.domain.base.BaseSubscriber;
 import app.com.domain.interactors.PersonsInteractor;
 import app.com.domain.models.PersonsModel;
+import io.reactivex.Flowable;
 import timber.log.Timber;
 
 @InjectViewState
@@ -20,30 +21,32 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
     @Inject
     PersonsInteractor personsInteractor;
 
+    private String currQuery = "";
+
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         InjectHelper.getMainAppComponent().inject(this);
     }
 
-    public void fetchPersonsDataByName(final String personName) {
-        if (personsInteractor == null) return;
-        startRequest();
-        disposableManager.addDisposable(personsInteractor
-                .fetchPersonsByName(personName)
-                .subscribeWith(new BaseSubscriber<PersonsModel>() {
-                    @Override
-                    public void onNext(PersonsModel personsModel) {
-                        successResponse(personsModel);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        Timber.e(t, "fetchPersonsDataByName ");
-                        showNoDataView();
-                    }
-                }));
-    }
+//    public void fetchPersonsDataByName(final String personName) {
+//        if (personsInteractor == null) return;
+//        startRequest();
+//        disposableManager.addDisposable(personsInteractor
+//                .fetchPersonsByName(personName)
+//                .subscribeWith(new BaseSubscriber<PersonsModel>() {
+//                    @Override
+//                    public void onNext(PersonsModel personsModel) {
+//                        successResponse(personsModel);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        Timber.e(t, "fetchPersonsDataByName ");
+//                        showNoDataView();
+//                    }
+//                }));
+//    }
 
     private void startRequest() {
         getViewState().hideNoDataView();
@@ -68,9 +71,32 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
         getViewState().showNoDataView();
     }
 
-    public void showList() {
+    private void showList() {
         getViewState().hideNoDataView();
         getViewState().hideProgress();
         getViewState().showList();
+    }
+
+    public void liveSearch(final Flowable<String> queryFlowable) {
+        disposableManager.addDisposable(
+                queryFlowable
+                        .filter(tmpQuery -> !currQuery.equals(tmpQuery))
+                        .switchMap(tmpQuery -> {
+                            currQuery = tmpQuery;
+                            return personsInteractor.fetchPersonsByName(tmpQuery);
+                        })
+                        .subscribeWith(new BaseSubscriber<PersonsModel>() {
+                            @Override
+                            public void onNext(PersonsModel personsModel) {
+                                Timber.d(personsModel.toString());
+                                successResponse(personsModel);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                Timber.e(t, "fetchPersonsDataByName ");
+                                showNoDataView();
+                            }
+                        }));
     }
 }
