@@ -1,6 +1,6 @@
-package app.com.data.transform;
+package app.com.data.models.transform;
 
-import app.com.data.models.PageEntity;
+import app.com.data.models.networkentity.PageEntity;
 import app.com.domain.models.PageModel;
 
 public class PageEntityToDomainModel {

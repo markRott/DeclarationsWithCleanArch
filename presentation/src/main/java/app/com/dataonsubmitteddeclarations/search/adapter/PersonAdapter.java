@@ -1,11 +1,13 @@
 package app.com.dataonsubmitteddeclarations.search.adapter;
 
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import app.com.dataonsubmitteddeclarations.R;
@@ -47,11 +49,12 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         holder.lastName.setText(model.getLastName());
         holder.position.setText(model.getPosition());
         holder.placeOfWork.setText(model.getPlaceOfWork());
+        holder.prbFavorite.setVisibility(model.isProgressBarVisibilityState() ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void fillIcons(PersonItemHolder holder, final PersonModel model) {
-        holder.ivFavorite.setImageResource(model.isFavorite() ?
-                R.drawable.ic_favorite : R.drawable.ic_unfavorite);
+        holder.ivFavorite.setImageResource(model.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_unfavorite);
+        holder.ivFavorite.setVisibility(model.isProgressBarVisibilityState() ? View.INVISIBLE : View.VISIBLE);
         holder.ivPdf.setImageResource(R.drawable.ic_pdf);
     }
 
@@ -81,6 +84,22 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         this.touchFavoriteListener = touchFavoriteListener;
     }
 
+    @CheckResult
+    public int findPositionByPersonId(PersonModel personModel) {
+        PersonModel currPersonModel = null;
+
+        for (int i = 0; i < getData().size(); i++) {
+
+            currPersonModel = getData().get(i);
+
+            if (currPersonModel == null) continue;
+            if (!currPersonModel.getId().equals(personModel.getId())) continue;
+
+            return i;
+        }
+        return -1;
+    }
+
     static class PersonItemHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_first_name)
@@ -95,6 +114,8 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         ImageView ivFavorite;
         @BindView(R.id.iv_pdf)
         ImageView ivPdf;
+        @BindView(R.id.prb_favorite)
+        ProgressBar prbFavorite;
 
         PersonItemHolder(View itemView) {
             super(itemView);

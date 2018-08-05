@@ -1,11 +1,11 @@
-package app.com.data.transform;
+package app.com.data.models.transform;
 
 import java.util.Collections;
 import java.util.List;
 
-import app.com.data.models.PageEntity;
-import app.com.data.models.PersonEntity;
-import app.com.data.models.PersonsEntity;
+import app.com.data.models.networkentity.PageEntity;
+import app.com.data.models.networkentity.PersonEntity;
+import app.com.data.models.networkentity.PersonsEntity;
 import app.com.domain.models.PersonModel;
 import app.com.domain.models.PersonsModel;
 

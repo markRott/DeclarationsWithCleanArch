@@ -1,10 +1,17 @@
-package app.com.domain.models;
+package app.com.data.models;
 
-import java.io.Serializable;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmField;
 
-public class PersonModel implements Serializable {
+public class CachePersonModel extends RealmObject {
 
+    public static final String ID = "id";
+
+    @PrimaryKey
+    @RealmField(name = ID)
     private String id;
+
     private String linkPdf;
     private String position;
     private String placeOfWork;
@@ -14,7 +21,6 @@ public class PersonModel implements Serializable {
     // custom fields
     private String comment;
     private boolean favoriteStatus;
-    private boolean progressBarVisibilityState;
 
     public String getLinkPdf() {
         return linkPdf;
@@ -84,19 +90,11 @@ public class PersonModel implements Serializable {
         return favoriteStatus;
     }
 
-    public boolean isProgressBarVisibilityState() {
-        return progressBarVisibilityState;
-    }
-
-    public void setProgressBarVisibilityState(boolean progressBarVisibilityState) {
-        this.progressBarVisibilityState = progressBarVisibilityState;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        if (!(o instanceof PersonModel)) return false;
-        PersonModel personModel = (PersonModel) o;
+        if (!(o instanceof CachePersonModel)) return false;
+        CachePersonModel personModel = (CachePersonModel) o;
         return id.equals(personModel.id);
     }
 
@@ -109,8 +107,8 @@ public class PersonModel implements Serializable {
 
     @Override
     public String toString() {
-        return "PersonModel{" +
-                "id='" + id + '\'' +
+        return "CachePersonModel{" +
+                "id ='" + id + '\'' +
                 ", linkPdf='" + linkPdf + '\'' +
                 ", position='" + position + '\'' +
                 ", placeOfWork='" + placeOfWork + '\'' +

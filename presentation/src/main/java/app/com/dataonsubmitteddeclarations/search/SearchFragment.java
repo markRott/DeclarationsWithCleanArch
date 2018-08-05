@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +29,6 @@ import app.com.dataonsubmitteddeclarations.search.adapter.TouchFavoriteListener;
 import app.com.dataonsubmitteddeclarations.search.adapter.TouchPdfIconListener;
 import app.com.dataonsubmitteddeclarations.utils.ViewUtils;
 import app.com.domain.models.PersonModel;
-import app.com.domain.models.PersonsModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -162,8 +162,24 @@ public class SearchFragment extends BaseFragment implements SearchContract,
     }
 
     @Override
-    public void renderPersonsData(PersonsModel personsModel) {
-        personAdapter.setData(personsModel.getItems());
+    public void renderPersonsData(List<PersonModel> personModelList) {
+        personAdapter.setData(personModelList);
+    }
+
+    @Override
+    public void showFavoriteProgress(final PersonModel personModel) {
+        findItemAndSetupProgressBarState(personModel, true);
+    }
+
+    @Override
+    public void hideFavoriteProgress(final PersonModel personModel) {
+        findItemAndSetupProgressBarState(personModel, false);
+    }
+
+    private void findItemAndSetupProgressBarState(final PersonModel personModel, boolean visibilityState) {
+        final int itemPosition = findPersonPositionById(personModel);
+        personModel.setProgressBarVisibilityState(visibilityState);
+        personAdapter.notifyItemChanged(itemPosition);
     }
 
     @Override
@@ -200,7 +216,12 @@ public class SearchFragment extends BaseFragment implements SearchContract,
             if (args != null) {
                 favoritePersonModel = (PersonModel) args.get(FavoriteDialogFragment.SEND_FAVORITE_MODEL);
                 Timber.d(Objects.requireNonNull(favoritePersonModel).toString());
+                searchPresenter.favoriteRequest(favoritePersonModel);
             }
         }
+    }
+
+    private int findPersonPositionById(PersonModel personModel) {
+        return personAdapter.findPositionByPersonId(personModel);
     }
 }

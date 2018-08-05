@@ -2,10 +2,11 @@ package app.com.dataonsubmitteddeclarations.search;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
-import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
-import app.com.domain.models.PersonsModel;
+import java.util.List;
+
+import app.com.domain.models.PersonModel;
 
 @StateStrategyType(value = AddToEndSingleStrategy.class)
 public interface SearchContract extends MvpView {
@@ -22,5 +23,9 @@ public interface SearchContract extends MvpView {
 
     void hideList();
 
-    void renderPersonsData(PersonsModel personsModel);
+    void renderPersonsData(final List<PersonModel> personModelList);
+
+    void showFavoriteProgress(final PersonModel personModel);
+
+    void hideFavoriteProgress(final PersonModel personModel);
 }
