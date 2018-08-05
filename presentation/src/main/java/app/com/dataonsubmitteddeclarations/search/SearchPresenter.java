@@ -87,8 +87,8 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
         getViewState().showList();
     }
 
-    public void liveSearch(final Flowable<String> queryFlowable) {
-        disposableManager.addDisposable(queryFlowable
+    public void lifeSearchByInputText(final Flowable<String> textViewFlowable) {
+        disposableManager.addDisposable(textViewFlowable
                 .filter(tmpQuery -> !currQuery.equals(tmpQuery))
                 .switchMap(tmpQuery -> {
                     currQuery = tmpQuery;

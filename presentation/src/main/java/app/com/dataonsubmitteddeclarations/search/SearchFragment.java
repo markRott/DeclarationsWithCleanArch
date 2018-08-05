@@ -100,19 +100,7 @@ public class SearchFragment extends BaseFragment implements SearchContract,
     }
 
     private void enableLiveSearch() {
-//        searchDisposable =
-//                RxTextView
-//                        .textChanges(edtSearch)
-//                        .skip(1)
-//                        .filter(name -> !name.toString().isEmpty())
-//                        .debounce(500, TimeUnit.MILLISECONDS)
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(name -> {
-//                            Timber.d(name.toString());
-//                            searchPresenter.fetchPersonsDataByName(name.toString());
-//                        });
-//        disposableManager.addDisposable(searchDisposable);
-        Flowable<String> stringFromInput =
+        Flowable<String> textViewFlowable =
                 RxTextView
                         .textChanges(edtSearch)
                         .debounce(500, TimeUnit.MILLISECONDS)
@@ -122,7 +110,8 @@ public class SearchFragment extends BaseFragment implements SearchContract,
                         .publish()
                         .autoConnect()
                         .toFlowable(BackpressureStrategy.LATEST);
-        searchPresenter.liveSearch(stringFromInput);
+
+        searchPresenter.lifeSearchByInputText(textViewFlowable);
     }
 
     @OnClick(R.id.iv_clear_text)
