@@ -23,7 +23,7 @@ public interface SearchContract extends MvpView {
 
     void hideList();
 
-    void renderPersonsData(final List<PersonModel> personModelList);
+    void renderPersonItems(final List<PersonModel> personModelList);
 
     void showFavoriteProgress(final PersonModel personModel);
 

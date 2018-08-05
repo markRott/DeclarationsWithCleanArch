@@ -15,13 +15,13 @@ public class CompositeDisposableManager {
     public void addDisposable(final Disposable disposable) {
         if (disposable == null) return;
         compositeDisposable.add(disposable);
-        Timber.d("addDisposable");
+        Timber.d("Add disposable object = %s", disposable.toString());
     }
 
     public void clearCompositeDisposable() {
         if (!compositeDisposable.isDisposed()) {
+            Timber.d("Clear composite disposable. Current size = %s", compositeDisposable.size());
             compositeDisposable.clear();
-            Timber.d("clearCompositeDisposable");
         }
     }
 

@@ -40,6 +40,8 @@ import timber.log.Timber;
 public class SearchFragment extends BaseFragment implements SearchContract,
         TouchPdfIconListener<PersonModel>, TouchFavoriteListener<PersonModel> {
 
+    private static final boolean SHOW_FAVORITE_PROGRESS_BAR = true;
+
     @BindView(R.id.edt_search)
     EditText edtSearch;
     @BindView(R.id.vg_empty_list)
@@ -95,11 +97,11 @@ public class SearchFragment extends BaseFragment implements SearchContract,
     @Override
     public void onResume() {
         super.onResume();
-        enableLiveSearch();
+        enableLifeSearch();
         ViewUtils.hideKeyboardFrom(getContext(), getView());
     }
 
-    private void enableLiveSearch() {
+    private void enableLifeSearch() {
         Flowable<String> textViewFlowable =
                 RxTextView
                         .textChanges(edtSearch)
@@ -151,18 +153,18 @@ public class SearchFragment extends BaseFragment implements SearchContract,
     }
 
     @Override
-    public void renderPersonsData(List<PersonModel> personModelList) {
+    public void renderPersonItems(List<PersonModel> personModelList) {
         personAdapter.setData(personModelList);
     }
 
     @Override
     public void showFavoriteProgress(final PersonModel personModel) {
-        findItemAndSetupProgressBarState(personModel, true);
+        findItemAndSetupProgressBarState(personModel, SHOW_FAVORITE_PROGRESS_BAR);
     }
 
     @Override
     public void hideFavoriteProgress(final PersonModel personModel) {
-        findItemAndSetupProgressBarState(personModel, false);
+        findItemAndSetupProgressBarState(personModel, !SHOW_FAVORITE_PROGRESS_BAR);
     }
 
     private void findItemAndSetupProgressBarState(final PersonModel personModel, boolean visibilityState) {
@@ -204,7 +206,6 @@ public class SearchFragment extends BaseFragment implements SearchContract,
             final Bundle args = data.getExtras();
             if (args != null) {
                 favoritePersonModel = (PersonModel) args.get(FavoriteDialogFragment.SEND_FAVORITE_MODEL);
-                Timber.d(Objects.requireNonNull(favoritePersonModel).toString());
                 searchPresenter.favoriteRequest(favoritePersonModel);
             }
         }

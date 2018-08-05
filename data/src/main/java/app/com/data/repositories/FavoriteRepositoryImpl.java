@@ -10,6 +10,7 @@ import io.reactivex.Single;
 import io.realm.Realm;
 import io.realm.RealmModel;
 import io.realm.RealmResults;
+import timber.log.Timber;
 
 public class FavoriteRepositoryImpl implements FavoriteRepository {
 
@@ -31,6 +32,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 final RealmModel model = realm.copyToRealmOrUpdate(transform(personModel));
                 realm.commitTransaction();
                 realm.close();
+                Timber.d("Save favorite person to data base = %s", personModel.toString());
                 return personModel;
             }
         });
@@ -49,6 +51,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 boolean removeState = result.deleteAllFromRealm();
                 realm.commitTransaction();
                 realm.close();
+                Timber.d("Remove favorite person from data base = %s", personModel.toString());
                 return personModel;
             }
         });
@@ -57,6 +60,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     private CachePersonModel transform(PersonModel personModel) {
         final PersonModelToCache transformObject = new PersonModelToCache();
         final CachePersonModel cachePersonModel = transformObject.transform(personModel);
+        Timber.d("Cache person model = %s", cachePersonModel.toString());
         return cachePersonModel;
     }
 }
