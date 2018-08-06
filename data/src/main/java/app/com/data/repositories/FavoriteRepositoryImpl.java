@@ -32,8 +32,6 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 final RealmModel model = realm.copyToRealmOrUpdate(transform(personModel));
                 realm.commitTransaction();
                 realm.close();
-//                Timber.d("Save favorite person to data base = %s", personModel.toString());
-//                Timber.d("Add to favorite thread name = %s", Thread.currentThread().getName());
                 return personModel;
             }
         });
@@ -50,10 +48,11 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                         .equalTo(CachePersonModel.ID, personModel.getId())
                         .findAll();
                 boolean removeState = result.deleteAllFromRealm();
+                if (removeState) {
+                    personModel.setComment("");
+                }
                 realm.commitTransaction();
                 realm.close();
-//                Timber.d("Remove favorite person from data base = %s", personModel.toString());
-//                Timber.d("Remove from favorite thread name = %s", Thread.currentThread().getName());
                 return personModel;
             }
         });
@@ -62,7 +61,6 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     private CachePersonModel transform(PersonModel personModel) {
         final PersonModelToCache transformObject = new PersonModelToCache();
         final CachePersonModel cachePersonModel = transformObject.transform(personModel);
-//        Timber.d("Cache person model = %s", cachePersonModel.toString());
         return cachePersonModel;
     }
 }

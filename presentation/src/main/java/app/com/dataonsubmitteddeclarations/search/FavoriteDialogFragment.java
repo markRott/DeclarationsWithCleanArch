@@ -96,6 +96,7 @@ public class FavoriteDialogFragment extends DialogFragment {
     private void setupButtonState() {
         btnAddToFavorite.setText(personModel.isFavoriteStatus() ?
                 R.string.btn_add_update_comment : R.string.btn_add_to_favorite);
+        btnRemoveFromFavorite.setEnabled(personModel.isFavoriteStatus());
     }
 
     @Override
