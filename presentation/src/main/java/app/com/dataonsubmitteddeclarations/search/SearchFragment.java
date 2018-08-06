@@ -108,8 +108,6 @@ public class SearchFragment extends BaseFragment implements SearchContract,
                         .filter(charSequence -> charSequence.length() > 3)
                         .map(CharSequence::toString)
                         .distinctUntilChanged()
-                        .publish()
-                        .autoConnect()
                         .toFlowable(BackpressureStrategy.LATEST);
 
         searchPresenter.lifeSearchByInputText(textViewFlowable);
@@ -118,7 +116,7 @@ public class SearchFragment extends BaseFragment implements SearchContract,
     @OnClick(R.id.iv_clear_text)
     public void clearEditText() {
         edtSearch.setText("");
-        searchPresenter.showNoDataView();
+        searchPresenter.dropCurrentQuery();
     }
 
     @Override
@@ -152,7 +150,7 @@ public class SearchFragment extends BaseFragment implements SearchContract,
     }
 
     @Override
-    public void renderPersonItems(List<PersonModel> personModelList) {
+    public void renderPersonItems(final List<PersonModel> personModelList) {
         personAdapter.setData(personModelList);
     }
 

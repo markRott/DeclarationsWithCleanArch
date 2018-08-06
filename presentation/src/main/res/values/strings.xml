@@ -8,4 +8,6 @@
     <string name="btn_add_update_comment">Обновить комментарий</string>
     <string name="btn_remove_from_favorite">Удалить</string>
     <string name="btn_cancel">Отмена</string>
+
+    <string name="menu_favorite_item">Favorite</string>
 </resources>

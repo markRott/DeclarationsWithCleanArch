@@ -1,6 +1,5 @@
 package app.com.dataonsubmitteddeclarations.search.adapter;
 
-import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,8 +16,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapter.PersonItemHolder> {
-
-    private static final int WRONG_ITEM_POSITION = -1;
 
     private TouchPdfIconListener<PersonModel> touchPdfIconListener;
     private TouchFavoriteListener<PersonModel> touchFavoriteListener;

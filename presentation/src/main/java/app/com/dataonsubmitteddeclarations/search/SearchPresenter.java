@@ -5,32 +5,29 @@ import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import app.com.dataonsubmitteddeclarations.base.BasePresenter;
 import app.com.dataonsubmitteddeclarations.di.InjectHelper;
-import app.com.domain.base.BaseSubscriber;
 import app.com.domain.interactors.FavoriteInteractor;
 import app.com.domain.interactors.PersonsInteractor;
+import app.com.domain.interfaces.ThreadContract;
 import app.com.domain.models.PersonModel;
 import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 @InjectViewState
 public class SearchPresenter extends BasePresenter<SearchContract> {
 
-    private static final String TAG = SearchPresenter.class.getSimpleName();
-
     @Inject
     PersonsInteractor personsInteractor;
     @Inject
     FavoriteInteractor favoriteInteractor;
+    @Inject
+    ThreadContract threadContract;
 
     private String currQuery = "";
 
@@ -41,47 +38,34 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
     }
 
     public void lifeSearchByInputText(final Flowable<String> textViewFlowable) {
-        // TODO SHOW PROGRESS BAR
-        disposableManager.addDisposable(
-                textViewFlowable
-                        .filter(tmpQuery -> !currQuery.equals(tmpQuery))
-                        .switchMap(tmpQuery -> {
-                            currQuery = tmpQuery;
-                            return personsInteractor.fetchPersonsByName(tmpQuery);
+        disposableManager.addDisposable(textViewFlowable
+                .filter(this::isEqualQuery)
+                .observeOn(threadContract.ui())
+                .switchMap(tmpQuery -> {
+                    currQuery = tmpQuery;
+                    startRequestUpdateUi();
+                    return getPersonList(tmpQuery);
+                })
+                .subscribe(
+                        this::successResponse,
+                        error -> {
+                            Timber.e(error, "lifeSearchByInputText Error fetch persons data by name ");
+                            showNoDataView();
                         })
-                        .subscribeWith(new BaseSubscriber<List<PersonModel>>() {
-                            @Override
-                            public void onNext(List<PersonModel> modelList) {
-                                successResponse(modelList);
-                            }
-
-                            @Override
-                            public void onError(Throwable t) {
-                                Timber.e(t, "Error fetch persons data by name ");
-                                showNoDataView();
-                            }
-                        }));
+        );
     }
 
-    @SuppressLint("TimberArgCount")
-    public void favoriteRequest(final PersonModel personModel) {
-        getViewState().showFavoriteProgress(personModel);
-        final Disposable disposable =
-                favoriteInteractor
-                        .favoriteRequest(personModel)
-//                        .delay(30, TimeUnit.SECONDS)
-//                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                this::hideFavoriteProgressBar,
-                                error -> {
-                                    hideFavoriteProgressBar(personModel);
-                                    Timber.e(error, "Favorite request error");
-                                }
-                        );
-        disposableManager.addDisposable(disposable);
+    private Flowable<List<PersonModel>> getPersonList(String tmpQuery) {
+        return personsInteractor
+                .fetchPersonsByName(tmpQuery)
+                .onErrorResumeNext(throwable -> {
+                    showNoDataView();
+                    Timber.e(throwable, "Fetch persons by name");
+                    return Flowable.empty();
+                });
     }
 
-    private void startRequest() {
+    private void startRequestUpdateUi() {
         getViewState().hideNoDataView();
         getViewState().hideList();
         getViewState().showProgress();
@@ -96,22 +80,43 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
         getViewState().renderPersonItems(personModelList);
     }
 
-    public void showNoDataView() {
-        getViewState().hideProgress();
-        getViewState().hideList();
-        getViewState().showNoDataView();
-    }
-
     private void showList() {
         getViewState().hideNoDataView();
         getViewState().hideProgress();
         getViewState().showList();
     }
 
+    private void showNoDataView() {
+        getViewState().hideProgress();
+        getViewState().hideList();
+        getViewState().showNoDataView();
+    }
+
+    public void dropCurrentQuery() {
+        currQuery = "";
+    }
+
+    @SuppressLint("TimberArgCount")
+    public void favoriteRequest(final PersonModel personModel) {
+        getViewState().showFavoriteProgress(personModel);
+        final Disposable disposable = favoriteInteractor
+                .favoriteRequest(personModel)
+                .subscribe(
+                        this::hideFavoriteProgressBar,
+                        error -> {
+                            hideFavoriteProgressBar(personModel);
+                            Timber.e(error, "Favorite request error");
+                        }
+                );
+        disposableManager.addDisposable(disposable);
+    }
 
     private void hideFavoriteProgressBar(final PersonModel personModel) {
-        Timber.d("Update favorite status");
         getViewState().hideFavoriteProgress(personModel);
+    }
+
+    private boolean isEqualQuery(final String tmpQuery) {
+        return !currQuery.equals(tmpQuery);
     }
 }
 
