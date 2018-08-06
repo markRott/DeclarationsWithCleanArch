@@ -11,62 +11,90 @@ public class PersonModel implements Serializable {
     private String lastName;
     private String firstName;
 
+    // custom fields
+    private String comment;
     private boolean favoriteStatus;
+    private int positionInAdapter = -1;
+    private boolean progressBarVisibilityState;
+
+    public String getId() {
+        return id;
+    }
 
     public String getLinkPdf() {
         return linkPdf;
-    }
-
-    public void setLinkPdf(String linkPdf) {
-        this.linkPdf = linkPdf;
     }
 
     public String getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
     public String getPlaceOfWork() {
         return placeOfWork;
-    }
-
-    public void setPlaceOfWork(String placeOfWork) {
-        this.placeOfWork = placeOfWork;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getComment() {
+        return comment;
     }
 
-    public String getId() {
-        return id;
+    public boolean isFavoriteStatus() {
+        return favoriteStatus;
+    }
+
+    public int getPositionInAdapter() {
+        return positionInAdapter;
+    }
+
+    public boolean isProgressBarVisibilityState() {
+        return progressBarVisibilityState;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public boolean isFavorite() {
-        return favoriteStatus;
+    public void setLinkPdf(String linkPdf) {
+        this.linkPdf = linkPdf;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setPlaceOfWork(String placeOfWork) {
+        this.placeOfWork = placeOfWork;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public void setFavoriteStatus(boolean favoriteStatus) {
         this.favoriteStatus = favoriteStatus;
+    }
+
+    public void setPositionInAdapter(int positionInAdapter) {
+        this.positionInAdapter = positionInAdapter;
+    }
+
+    public void setProgressBarVisibilityState(boolean progressBarVisibilityState) {
+        this.progressBarVisibilityState = progressBarVisibilityState;
     }
 
     @Override
@@ -93,7 +121,10 @@ public class PersonModel implements Serializable {
                 ", placeOfWork='" + placeOfWork + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
+                ", comment='" + comment + '\'' +
                 ", favoriteStatus=" + favoriteStatus +
+                ", positionInAdapter=" + positionInAdapter +
+                ", progressBarVisibilityState=" + progressBarVisibilityState +
                 '}';
     }
 }

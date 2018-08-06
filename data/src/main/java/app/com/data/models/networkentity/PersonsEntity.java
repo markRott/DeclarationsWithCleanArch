@@ -1,4 +1,4 @@
-package app.com.data.models;
+package app.com.data.models.networkentity;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -11,16 +11,14 @@
     <style name="PersonTextViewStyle" parent="@style/TextAppearance.AppCompat">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">10dp</item>
-        <item name="android:textSize">16sp</item>
-        <!--<item name="android:ellipsize">end</item>-->
-        <!--<item name="android:maxLines">1</item>-->
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="IconViewStyle">
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:layout_marginStart">12dp</item>
         <item name="android:padding">10dp</item>
     </style>

@@ -1,6 +1,6 @@
 package app.com.data.network;
 
-import app.com.data.models.PersonsEntity;
+import app.com.data.models.networkentity.PersonsEntity;
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

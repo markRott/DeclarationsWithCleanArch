@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     android:background="@android:color/white"
-    android:clickable="true">
+    android:clickable="true"
+    android:padding="10dp">
 
     <RelativeLayout
         android:id="@+id/vg_search_container"

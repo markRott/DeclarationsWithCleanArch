@@ -3,6 +3,7 @@ package app.com.dataonsubmitteddeclarations.base;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseRecyclerAdapter<Item, Holder extends RecyclerView.ViewHolder>
@@ -30,7 +31,7 @@ public abstract class BaseRecyclerAdapter<Item, Holder extends RecyclerView.View
     }
 
     public List<Item> getData() {
-        return data;
+        return data == null ? Collections.emptyList() : data;
     }
 
     public boolean isEmpty() {

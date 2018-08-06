@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations.search;
+package app.com.dataonsubmitteddeclarations.search.adapter.listeners;
 
 public interface TouchPdfIconListener<T> {
 

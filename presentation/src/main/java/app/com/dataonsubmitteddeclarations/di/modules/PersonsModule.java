@@ -1,11 +1,16 @@
 package app.com.dataonsubmitteddeclarations.di.modules;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import app.com.data.network.ApplicationApi;
-import app.com.data.repositories.PersonsRepositoryImpl;
-import app.com.domain.interactors.PersonsInteractor;
-import app.com.domain.interfaces.PersonsRepository;
+import app.com.data.repositories.FavoriteRepositoryImpl;
+import app.com.data.repositories.FetchPersonsFromDatabase;
+import app.com.data.repositories.FetchPersonsFromNetwork;
+import app.com.domain.interactors.FavoriteInteractor;
+import app.com.domain.interactors.FetchPersonsInteractor;
+import app.com.domain.interfaces.FavoriteRepository;
+import app.com.domain.interfaces.FetchPersonsRepository;
 import app.com.domain.interfaces.ThreadContract;
 import dagger.Module;
 import dagger.Provides;
@@ -13,24 +18,67 @@ import dagger.Provides;
 @Module
 public class PersonsModule {
 
+    //----------------------------------------------------------------------------------------------
+
     @Provides
     @Singleton
-    public PersonsRepository providePersonRepository(final ApplicationApi applicationApi) {
-        return new PersonsRepositoryImpl(applicationApi);
+    @Named("search")
+    public FetchPersonsRepository provideSearchPersonRepository(final ApplicationApi applicationApi) {
+        return new FetchPersonsFromNetwork(applicationApi);
     }
 
     @Provides
     @Singleton
-    public PersonsInteractor providePersonsInteractor(
+    @Named("search")
+    public FetchPersonsInteractor provideSearchPersonsInteractor(
             final ThreadContract threadContract,
-            final PersonsRepository repository) {
-        return new PersonsInteractor(threadContract, repository);
+            @Named("search") final FetchPersonsRepository repository) {
+
+        return new FetchPersonsInteractor(threadContract, repository);
+    }
+
+    //----------------------------------------------------------------------------------------------
+
+    @Provides
+    @Singleton
+    @Named("favorite")
+    public FetchPersonsRepository provideSearchFavoritePersonRepository() {
+        return new FetchPersonsFromDatabase();
+    }
+
+    @Provides
+    @Singleton
+    @Named("favorite")
+    public FetchPersonsInteractor provideFavoritePersonsInteractor(
+            final ThreadContract threadContract,
+            @Named("favorite") final FetchPersonsRepository repository) {
+
+        return new FetchPersonsInteractor(threadContract, repository);
+    }
+
+    //----------------------------------------------------------------------------------------------
+
+    @Provides
+    @Singleton
+    FavoriteRepository provideFavoriteRepository() {
+        return new FavoriteRepositoryImpl();
+    }
+
+    @Provides
+    @Singleton
+    public FavoriteInteractor provideFavoriteInteractor(
+            final ThreadContract threadContract,
+            final FavoriteRepository favoriteRepository) {
+
+        return new FavoriteInteractor(threadContract, favoriteRepository);
     }
 
     public interface Expose {
 
-        PersonsRepository personRepository();
+        FetchPersonsRepository personRepository();
 
-        PersonsInteractor personsInteractor();
+        FetchPersonsInteractor personsInteractor();
+
+        FavoriteInteractor favoriteInteractor();
     }
 }

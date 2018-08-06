@@ -5,7 +5,7 @@ import com.arellomobile.mvp.MvpView;
 
 import javax.inject.Inject;
 
-import app.com.dataonsubmitteddeclarations.utils.CompositeDisposableManager;
+import app.com.dataonsubmitteddeclarations.managers.CompositeDisposableManager;
 
 public abstract class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
 
@@ -14,8 +14,10 @@ public abstract class BasePresenter<View extends MvpView> extends MvpPresenter<V
 
     @Override
     public void onDestroy() {
-        disposableManager.clearCompositeDisposable();
-        disposableManager = null;
+        if (disposableManager != null) {
+            disposableManager.clearCompositeDisposable();
+            disposableManager = null;
+        }
         super.onDestroy();
     }
 }

@@ -7,12 +7,15 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import javax.inject.Inject;
 
 import app.com.dataonsubmitteddeclarations.di.InjectHelper;
-import app.com.dataonsubmitteddeclarations.utils.CompositeDisposableManager;
+import app.com.dataonsubmitteddeclarations.managers.CompositeDisposableManager;
+import app.com.dataonsubmitteddeclarations.managers.Router;
 
 public abstract class BaseFragment extends MvpAppCompatFragment {
 
     @Inject
     protected CompositeDisposableManager disposableManager;
+    @Inject
+    protected Router router;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,9 @@ public abstract class BaseFragment extends MvpAppCompatFragment {
 
     @Override
     public void onPause() {
-        disposableManager.clearCompositeDisposable();
+        if (disposableManager != null) {
+            disposableManager.clearCompositeDisposable();
+        }
         super.onPause();
     }
 
