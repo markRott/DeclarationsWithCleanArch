@@ -52,13 +52,12 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
                         .subscribeWith(new BaseSubscriber<List<PersonModel>>() {
                             @Override
                             public void onNext(List<PersonModel> modelList) {
-                                Timber.d(Arrays.toString(modelList.toArray()));
                                 successResponse(modelList);
                             }
 
                             @Override
                             public void onError(Throwable t) {
-                                Timber.e(t, "fetchPersonsDataByName ");
+                                Timber.e(t, "Error fetch persons data by name ");
                                 showNoDataView();
                             }
                         }));
@@ -70,13 +69,13 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
         final Disposable disposable =
                 favoriteInteractor
                         .favoriteRequest(personModel)
-                        .delay(30, TimeUnit.SECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
+//                        .delay(30, TimeUnit.SECONDS)
+//                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 this::hideFavoriteProgressBar,
                                 error -> {
                                     hideFavoriteProgressBar(personModel);
-                                    Timber.e(error, "favoriteRequest error");
+                                    Timber.e(error, "Favorite request error");
                                 }
                         );
         disposableManager.addDisposable(disposable);
@@ -111,6 +110,7 @@ public class SearchPresenter extends BasePresenter<SearchContract> {
 
 
     private void hideFavoriteProgressBar(final PersonModel personModel) {
+        Timber.d("Update favorite status");
         getViewState().hideFavoriteProgress(personModel);
     }
 }

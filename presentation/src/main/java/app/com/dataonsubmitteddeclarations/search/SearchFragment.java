@@ -17,7 +17,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import app.com.dataonsubmitteddeclarations.R;
@@ -168,9 +167,13 @@ public class SearchFragment extends BaseFragment implements SearchContract,
     }
 
     private void findItemAndSetupProgressBarState(final PersonModel personModel, boolean visibilityState) {
-        final int itemPosition = findPersonPositionById(personModel);
-        personModel.setProgressBarVisibilityState(visibilityState);
-        personAdapter.notifyItemChanged(itemPosition);
+        final int itemPosition = personModel.getPositionInAdapter();
+        if (itemPosition >= 0) {
+            personModel.setProgressBarVisibilityState(visibilityState);
+            personAdapter.notifyItemChanged(itemPosition);
+        } else {
+            Timber.e("Wrong item position");
+        }
     }
 
     @Override
@@ -209,9 +212,5 @@ public class SearchFragment extends BaseFragment implements SearchContract,
                 searchPresenter.favoriteRequest(favoritePersonModel);
             }
         }
-    }
-
-    private int findPersonPositionById(PersonModel personModel) {
-        return personAdapter.findPositionByPersonId(personModel);
     }
 }

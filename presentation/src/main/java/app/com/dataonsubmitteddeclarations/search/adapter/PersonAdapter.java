@@ -18,8 +18,13 @@ import butterknife.ButterKnife;
 
 public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapter.PersonItemHolder> {
 
+    private static final int WRONG_ITEM_POSITION = -1;
+
     private TouchPdfIconListener<PersonModel> touchPdfIconListener;
     private TouchFavoriteListener<PersonModel> touchFavoriteListener;
+
+    public PersonAdapter() {
+    }
 
     @NonNull
     @Override
@@ -53,7 +58,7 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
     }
 
     private void fillIcons(PersonItemHolder holder, final PersonModel model) {
-        holder.ivFavorite.setImageResource(model.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_unfavorite);
+        holder.ivFavorite.setImageResource(model.isFavoriteStatus() ? R.drawable.ic_favorite : R.drawable.ic_unfavorite);
         holder.ivFavorite.setVisibility(model.isProgressBarVisibilityState() ? View.INVISIBLE : View.VISIBLE);
         holder.ivPdf.setImageResource(R.drawable.ic_pdf);
     }
@@ -72,7 +77,10 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
             final PersonModel model,
             int position) {
         if (touchFavoriteListener != null) {
-            holder.ivFavorite.setOnClickListener(v -> touchFavoriteListener.touchFavoriteIcon(model, position));
+            holder.ivFavorite.setOnClickListener(v -> {
+                model.setPositionInAdapter(position);
+                touchFavoriteListener.touchFavoriteIcon(model, position);
+            });
         }
     }
 
@@ -82,22 +90,6 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
 
     public void setTouchFavoriteListener(TouchFavoriteListener<PersonModel> touchFavoriteListener) {
         this.touchFavoriteListener = touchFavoriteListener;
-    }
-
-    @CheckResult
-    public int findPositionByPersonId(PersonModel personModel) {
-        PersonModel currPersonModel = null;
-
-        for (int i = 0; i < getData().size(); i++) {
-
-            currPersonModel = getData().get(i);
-
-            if (currPersonModel == null) continue;
-            if (!currPersonModel.getId().equals(personModel.getId())) continue;
-
-            return i;
-        }
-        return -1;
     }
 
     static class PersonItemHolder extends RecyclerView.ViewHolder {

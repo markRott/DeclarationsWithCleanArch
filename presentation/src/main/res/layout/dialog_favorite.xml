@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:clickable="true">
+    android:clickable="true"
+    android:padding="15dp">
 
     <LinearLayout
         android:id="@+id/vg_title_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:orientation="vertical">
 
         <TextView
@@ -28,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="@string/hint_comment"
-            android:maxLength="140"
+            android:maxLength="70"
             android:maxLines="2"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
@@ -41,8 +40,8 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/vg_title_holder"
         android:layout_marginEnd="5dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/btn_add_favorite"
@@ -63,7 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_cancel"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

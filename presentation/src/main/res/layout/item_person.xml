@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@android:color/white"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="5dp"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -22,21 +22,25 @@
             <TextView
                 android:id="@+id/tv_first_name"
                 style="@style/PersonTextViewStyle"
+                android:layout_marginTop="10dp"
                 tools:text="First name" />
 
             <TextView
                 android:id="@+id/tv_last_name"
                 style="@style/PersonTextViewStyle"
+                android:visibility="gone"
                 tools:text="Last name" />
 
             <TextView
                 android:id="@+id/tv_position"
                 style="@style/PersonTextViewStyle"
+                android:visibility="gone"
                 tools:text="Position" />
 
             <TextView
                 android:id="@+id/tv_place_of_work"
                 style="@style/PersonTextViewStyle"
+                android:visibility="gone"
                 tools:text="Place of work" />
 
             <LinearLayout

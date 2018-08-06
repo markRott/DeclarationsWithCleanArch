@@ -72,7 +72,7 @@ public class FavoriteDialogFragment extends DialogFragment {
         getDataFromArguments();
         setupTitle();
         fillComment();
-//        setupButtonState();
+        setupButtonState();
     }
 
     private void getDataFromArguments() {
@@ -84,7 +84,7 @@ public class FavoriteDialogFragment extends DialogFragment {
     }
 
     private void setupTitle() {
-        tvTitle.setText(personModel.isFavorite() ?
+        tvTitle.setText(personModel.isFavoriteStatus() ?
                 R.string.title_favorite_remove : R.string.title_favorite_add);
     }
 
@@ -94,8 +94,8 @@ public class FavoriteDialogFragment extends DialogFragment {
     }
 
     private void setupButtonState() {
-        btnAddToFavorite.setEnabled(!personModel.isFavorite());
-        btnRemoveFromFavorite.setEnabled(personModel.isFavorite());
+        btnAddToFavorite.setText(personModel.isFavoriteStatus() ?
+                R.string.btn_add_update_comment : R.string.btn_add_to_favorite);
     }
 
     @Override

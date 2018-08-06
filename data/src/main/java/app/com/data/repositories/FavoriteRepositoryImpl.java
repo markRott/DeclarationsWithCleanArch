@@ -1,6 +1,7 @@
 package app.com.data.repositories;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import app.com.data.models.CachePersonModel;
 import app.com.data.models.transform.PersonModelToCache;
@@ -10,16 +11,15 @@ import io.reactivex.Single;
 import io.realm.Realm;
 import io.realm.RealmModel;
 import io.realm.RealmResults;
-import timber.log.Timber;
 
 public class FavoriteRepositoryImpl implements FavoriteRepository {
 
     @Override
     public Single<PersonModel> executeFavoriteRequest(final PersonModel personModel) {
-        if (personModel.isFavorite()) {
-            return addFavoriteRequest(personModel);
+        if (personModel.isFavoriteStatus()) {
+            return addFavoriteRequest(personModel).delay(5, TimeUnit.SECONDS);
         } else {
-            return removeFromFavoriteRequest(personModel);
+            return removeFromFavoriteRequest(personModel).delay(5, TimeUnit.SECONDS);
         }
     }
 
@@ -32,7 +32,8 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 final RealmModel model = realm.copyToRealmOrUpdate(transform(personModel));
                 realm.commitTransaction();
                 realm.close();
-                Timber.d("Save favorite person to data base = %s", personModel.toString());
+//                Timber.d("Save favorite person to data base = %s", personModel.toString());
+//                Timber.d("Add to favorite thread name = %s", Thread.currentThread().getName());
                 return personModel;
             }
         });
@@ -51,7 +52,8 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 boolean removeState = result.deleteAllFromRealm();
                 realm.commitTransaction();
                 realm.close();
-                Timber.d("Remove favorite person from data base = %s", personModel.toString());
+//                Timber.d("Remove favorite person from data base = %s", personModel.toString());
+//                Timber.d("Remove from favorite thread name = %s", Thread.currentThread().getName());
                 return personModel;
             }
         });
@@ -60,7 +62,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     private CachePersonModel transform(PersonModel personModel) {
         final PersonModelToCache transformObject = new PersonModelToCache();
         final CachePersonModel cachePersonModel = transformObject.transform(personModel);
-        Timber.d("Cache person model = %s", cachePersonModel.toString());
+//        Timber.d("Cache person model = %s", cachePersonModel.toString());
         return cachePersonModel;
     }
 }
