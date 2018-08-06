@@ -1,9 +1,12 @@
 package app.com.data.repositories;
 
-import app.com.data.models.PersonsEntity;
+import java.util.List;
+
+import app.com.data.models.networkentity.PersonsEntity;
+import app.com.data.models.transform.PersonsEntityToDomainModel;
 import app.com.data.network.ApplicationApi;
-import app.com.data.transform.PersonsEntityToDomainModel;
 import app.com.domain.interfaces.PersonsRepository;
+import app.com.domain.models.PersonModel;
 import app.com.domain.models.PersonsModel;
 import io.reactivex.Flowable;
 import io.reactivex.annotations.NonNull;
@@ -19,18 +22,17 @@ public class PersonsRepositoryImpl implements PersonsRepository {
     }
 
     @Override
-    public Flowable<PersonsModel> fetchPersonsByName(final String personName) {
+    public Flowable<List<PersonModel>> fetchPersonsByName(final String personName) {
         return api
                 .fetchPersons(personName)
                 .map(new TransformOperator());
     }
 
-    private class TransformOperator implements Function<PersonsEntity, PersonsModel> {
+    private class TransformOperator implements Function<PersonsEntity, List<PersonModel>> {
         @Override
-        public PersonsModel apply(@NonNull PersonsEntity personsEntity) {
-            PersonsModel personModel = new PersonsEntityToDomainModel().transform(personsEntity);
-            Timber.d(personModel.toString());
-            return personModel;
+        public List<PersonModel> apply(@NonNull PersonsEntity personsEntity) {
+            final PersonsModel personModel = new PersonsEntityToDomainModel().transform(personsEntity);
+            return personModel.getItems();
         }
     }
 }

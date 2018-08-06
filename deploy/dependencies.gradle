@@ -1,0 +1,41 @@
+rootProject.ext {
+
+    // project
+    versionCode = 1
+    minSdkVersion = 17
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    versionName = "1.0"
+    buildToolsVersion = "26.0.0"
+    supportLibVersion = "27.1.1"
+
+    // json
+    gson = "2.0.2"
+    converterGson = "2.3.0"
+
+    // rxJava and rxAndroid
+    rxJava = "2.2.0"
+    rxAndroid = "2.0.2"
+    rxJavaAdapter = "1.0.0"
+    rxbinding = "2.1.1"
+
+    // Dagger2
+    javaxInject = "1"
+    dagger = "2.16"
+    daggerCompiler = "2.16"
+
+
+    retrofit = "2.3.0"
+    butterknife = "8.8.1"
+
+    moxy = "1.5.5"
+    moxyCompiler = "1.5.5"
+    moxyAppCompat = "1.5.5"
+
+    cicerone = "2.1.0"
+    picasso = "2.5.2"
+    timber = "4.7.1"
+
+    debugCompileLeakcanary = "1.5.2"
+    releaseCompileLeakcanary = "1.5.2"
+}

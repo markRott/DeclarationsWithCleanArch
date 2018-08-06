@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">DataOnSubmittedDeclarations</string>
     <string name="no_data">Нет данных. Ввведите в строке поиска  фамилию/имя/отчество</string>
+    <string name="title_favorite_add">Добавить в избранное</string>
+    <string name="title_favorite_remove">Удалить из Избранного</string>
+    <string name="hint_comment">Комментарий</string>
+    <string name="btn_add_to_favorite">Добавить</string>
+    <string name="btn_add_update_comment">Обновить комментарий</string>
+    <string name="btn_remove_from_favorite">Удалить</string>
+    <string name="btn_cancel">Отмена</string>
+
+    <string name="menu_favorite_item">Favorite</string>
 </resources>

@@ -2,7 +2,7 @@ package app.com.dataonsubmitteddeclarations.di.modules;
 
 import android.annotation.SuppressLint;
 
-import app.com.dataonsubmitteddeclarations.utils.CompositeDisposableManager;
+import app.com.dataonsubmitteddeclarations.managers.CompositeDisposableManager;
 import dagger.Module;
 import dagger.Provides;
 import timber.log.Timber;

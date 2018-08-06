@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import app.com.data.network.ApplicationApi;
@@ -47,7 +49,10 @@ public class NetworkModule {
 
     @NonNull
     private OkHttpClient initOkHttpClient() {
-        return new OkHttpClient();
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.readTimeout(30, TimeUnit.SECONDS);
+        builder.writeTimeout(30, TimeUnit.SECONDS);
+        return builder.build();
     }
 
     public interface Expose {

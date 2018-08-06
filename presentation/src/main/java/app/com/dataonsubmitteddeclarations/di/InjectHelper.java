@@ -7,6 +7,7 @@ import app.com.dataonsubmitteddeclarations.di.modules.CompositeDisposableModule;
 import app.com.dataonsubmitteddeclarations.di.modules.ContextModule;
 import app.com.dataonsubmitteddeclarations.di.modules.NetworkModule;
 import app.com.dataonsubmitteddeclarations.di.modules.PersonsModule;
+import app.com.dataonsubmitteddeclarations.di.modules.RouterModule;
 import app.com.dataonsubmitteddeclarations.di.modules.ThreadModule;
 import app.com.dataonsubmitteddeclarations.di.modules.UtilsModule;
 
@@ -22,11 +23,6 @@ public class InjectHelper {
         return mainAppComponent = DaggerMainAppComponent
                 .builder()
                 .contextModule(new ContextModule(application))
-                .networkModule(new NetworkModule())
-                .threadModule(new ThreadModule())
-                .utilsModule(new UtilsModule())
-                .personsModule(new PersonsModule())
-                .compositeDisposableModule(new CompositeDisposableModule())
                 .build();
 //        return null;
     }

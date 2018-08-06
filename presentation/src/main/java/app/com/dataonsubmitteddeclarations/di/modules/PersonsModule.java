@@ -3,8 +3,11 @@ package app.com.dataonsubmitteddeclarations.di.modules;
 import javax.inject.Singleton;
 
 import app.com.data.network.ApplicationApi;
+import app.com.data.repositories.FavoriteRepositoryImpl;
 import app.com.data.repositories.PersonsRepositoryImpl;
+import app.com.domain.interactors.FavoriteInteractor;
 import app.com.domain.interactors.PersonsInteractor;
+import app.com.domain.interfaces.FavoriteRepository;
 import app.com.domain.interfaces.PersonsRepository;
 import app.com.domain.interfaces.ThreadContract;
 import dagger.Module;
@@ -24,7 +27,23 @@ public class PersonsModule {
     public PersonsInteractor providePersonsInteractor(
             final ThreadContract threadContract,
             final PersonsRepository repository) {
+
         return new PersonsInteractor(threadContract, repository);
+    }
+
+    @Provides
+    @Singleton
+    FavoriteRepository provideFavoriteRepository() {
+        return new FavoriteRepositoryImpl();
+    }
+
+    @Provides
+    @Singleton
+    public FavoriteInteractor provideFavoriteInteractor(
+            final ThreadContract threadContract,
+            final FavoriteRepository favoriteRepository) {
+
+        return new FavoriteInteractor(threadContract, favoriteRepository);
     }
 
     public interface Expose {
@@ -32,5 +51,7 @@ public class PersonsModule {
         PersonsRepository personRepository();
 
         PersonsInteractor personsInteractor();
+
+        FavoriteInteractor favoriteInteractor();
     }
 }

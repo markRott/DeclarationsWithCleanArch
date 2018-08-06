@@ -1,8 +1,10 @@
 package app.com.domain.interactors;
 
+import java.util.List;
+
 import app.com.domain.interfaces.PersonsRepository;
 import app.com.domain.interfaces.ThreadContract;
-import app.com.domain.models.PersonsModel;
+import app.com.domain.models.PersonModel;
 import io.reactivex.Flowable;
 
 public class PersonsInteractor {
@@ -17,7 +19,7 @@ public class PersonsInteractor {
         this.personsRepository = personsRepository;
     }
 
-    public Flowable<PersonsModel> fetchPersonsByName(final String personName) {
+    public Flowable<List<PersonModel>> fetchPersonsByName(final String personName) {
         return personsRepository
                 .fetchPersonsByName(personName)
                 .subscribeOn(threadContract.io())

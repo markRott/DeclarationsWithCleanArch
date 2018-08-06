@@ -1,14 +1,14 @@
-package app.com.data.transform;
+package app.com.data.models.transform;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import app.com.data.models.PersonEntity;
+import app.com.data.models.networkentity.PersonEntity;
 import app.com.domain.models.PersonModel;
 
 public class PersonEntityToDomainModel {
 
-    private static final int MAX_LIST_SIZE = 200;
+    private static final int MAX_LIST_SIZE = 50;
 
     public List<PersonModel> transform(List<PersonEntity> personEntityList) {
         final List<PersonModel> personModelList = new ArrayList<>(personEntityList.size());
