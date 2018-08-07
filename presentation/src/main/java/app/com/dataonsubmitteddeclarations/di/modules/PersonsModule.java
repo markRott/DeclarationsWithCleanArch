@@ -8,6 +8,7 @@ import app.com.data.repositories.FavoriteRepositoryImpl;
 import app.com.data.repositories.FetchPersonsFromDatabase;
 import app.com.data.repositories.FetchPersonsFromNetwork;
 import app.com.domain.interactors.FavoriteInteractor;
+import app.com.domain.interactors.FetchPersonsContract;
 import app.com.domain.interactors.FetchPersonsInteractor;
 import app.com.domain.interfaces.FavoriteRepository;
 import app.com.domain.interfaces.FetchPersonsRepository;
@@ -30,7 +31,7 @@ public class PersonsModule {
     @Provides
     @Singleton
     @Named("search")
-    public FetchPersonsInteractor provideSearchPersonsInteractor(
+    public FetchPersonsContract provideSearchPersonsInteractor(
             final ThreadContract threadContract,
             @Named("search") final FetchPersonsRepository repository) {
 
@@ -49,7 +50,7 @@ public class PersonsModule {
     @Provides
     @Singleton
     @Named("favorite")
-    public FetchPersonsInteractor provideFavoritePersonsInteractor(
+    public FetchPersonsContract provideFavoritePersonsInteractor(
             final ThreadContract threadContract,
             @Named("favorite") final FetchPersonsRepository repository) {
 

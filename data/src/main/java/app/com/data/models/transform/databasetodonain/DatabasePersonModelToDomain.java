@@ -16,17 +16,18 @@ public class DatabasePersonModelToDomain {
         return personModelList;
     }
 
-    private PersonModel transform(DatabasePersonModel databasePersonModel) {
+    private PersonModel transform(DatabasePersonModel databaseModel) {
         final PersonModel personModel = new PersonModel();
-        if (personModel != null) {
-            personModel.setId(databasePersonModel.getId());
-            personModel.setFirstName(databasePersonModel.getFirstName());
-            personModel.setLastName(databasePersonModel.getLastName());
-            personModel.setPlaceOfWork(databasePersonModel.getPlaceOfWork());
-            personModel.setPosition(databasePersonModel.getPosition());
-            personModel.setLinkPdf(databasePersonModel.getLinkPdf());
-            personModel.setComment(databasePersonModel.getComment());
-            personModel.setFavoriteStatus(databasePersonModel.isFavoriteStatus());
+        if (databaseModel != null) {
+            personModel.setId(databaseModel.getId());
+            personModel.setFirstName(databaseModel.getFirstName().toLowerCase());
+            personModel.setLastName(databaseModel.getLastName().toLowerCase());
+            personModel.setMiddleName(databaseModel.getMiddleName().toLowerCase());
+            personModel.setPlaceOfWork(databaseModel.getPlaceOfWork());
+            personModel.setPosition(databaseModel.getPosition());
+            personModel.setLinkPdf(databaseModel.getLinkPdf());
+            personModel.setComment(databaseModel.getComment());
+            personModel.setFavoriteStatus(databaseModel.isFavorite());
         }
         return personModel;
     }

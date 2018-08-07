@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import app.com.dataonsubmitteddeclarations.base.BaseSearchFragment;
+import app.com.dataonsubmitteddeclarations.favorite.FavoriteDialogFragment;
 import app.com.dataonsubmitteddeclarations.managers.Router;
 import app.com.domain.models.PersonModel;
 
@@ -27,6 +28,8 @@ public class SearchFragment extends BaseSearchFragment {
             final Bundle args = data.getExtras();
             if (args != null) {
                 favoritePersonModel = (PersonModel) args.get(FavoriteDialogFragment.SEND_FAVORITE_MODEL);
+                if (favoritePersonModel == null) return;
+//                favoritePersonModel.setDraftComment(true);
                 searchPresenter.favoriteRequest(favoritePersonModel);
             }
         }

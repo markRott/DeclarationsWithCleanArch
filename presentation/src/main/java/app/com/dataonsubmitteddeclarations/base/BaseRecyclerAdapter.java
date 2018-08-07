@@ -1,5 +1,6 @@
 package app.com.dataonsubmitteddeclarations.base;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
@@ -10,6 +11,11 @@ public abstract class BaseRecyclerAdapter<Item, Holder extends RecyclerView.View
         extends RecyclerView.Adapter<Holder> {
 
     private List<Item> data;
+    private Context context;
+
+    public BaseRecyclerAdapter(Context context) {
+        this.context = context;
+    }
 
     @Override
     public int getItemCount() {
@@ -43,6 +49,10 @@ public abstract class BaseRecyclerAdapter<Item, Holder extends RecyclerView.View
             data.clear();
             notifyDataSetChanged();
         }
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     protected Item getItemByPosition(int position) {

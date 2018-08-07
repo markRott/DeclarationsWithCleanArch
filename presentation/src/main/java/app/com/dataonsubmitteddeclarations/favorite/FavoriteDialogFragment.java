@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations.search;
+package app.com.dataonsubmitteddeclarations.favorite;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -60,7 +60,11 @@ public class FavoriteDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.dialog_favorite, null);
         unbinder = ButterKnife.bind(this, view);
         return view;

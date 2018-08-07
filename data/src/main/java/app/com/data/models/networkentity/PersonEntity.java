@@ -5,24 +5,20 @@ import com.google.gson.annotations.SerializedName;
 public class PersonEntity {
 
     @SerializedName("linkPDF")
-    private String linkPDF;
+    private String linkPdf;
     @SerializedName("position")
     private String position;
     @SerializedName("placeOfWork")
     private String placeOfWork;
     @SerializedName("lastname")
-    private String lastname;
+    private String lastName;
     @SerializedName("firstname")
-    private String firstname;
+    private String firstName;
     @SerializedName("id")
     private String id;
 
     public String getLinkPDF() {
-        return linkPDF;
-    }
-
-    public void setLinkPDF(String linkPDF) {
-        this.linkPDF = linkPDF;
+        return linkPdf;
     }
 
     public String getPosition() {
@@ -37,24 +33,12 @@ public class PersonEntity {
         return placeOfWork;
     }
 
-    public void setPlaceOfWork(String placeOfWork) {
-        this.placeOfWork = placeOfWork;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getId() {
@@ -68,11 +52,11 @@ public class PersonEntity {
     @Override
     public String toString() {
         return "PersonEntity{" +
-                "linkPDF='" + linkPDF + '\'' +
+                "linkPDF='" + linkPdf + '\'' +
                 ", position='" + position + '\'' +
                 ", placeOfWork='" + placeOfWork + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", firstname='" + firstname + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", id='" + id + '\'' +
                 '}';
     }

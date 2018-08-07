@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import app.com.dataonsubmitteddeclarations.R;
 import app.com.dataonsubmitteddeclarations.favorite.FavoriteFragment;
 import app.com.dataonsubmitteddeclarations.pdf.PdfViewerFragment;
-import app.com.dataonsubmitteddeclarations.search.FavoriteDialogFragment;
+import app.com.dataonsubmitteddeclarations.favorite.FavoriteDialogFragment;
 import app.com.dataonsubmitteddeclarations.search.SearchFragment;
 
 public class Router {

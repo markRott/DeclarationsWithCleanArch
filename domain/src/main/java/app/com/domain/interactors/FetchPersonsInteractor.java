@@ -7,7 +7,7 @@ import app.com.domain.interfaces.ThreadContract;
 import app.com.domain.models.PersonModel;
 import io.reactivex.Flowable;
 
-public final class FetchPersonsInteractor {
+public final class FetchPersonsInteractor implements FetchPersonsContract{
 
     private final ThreadContract threadContract;
     private final FetchPersonsRepository fetchPersonsRepository;
@@ -19,6 +19,7 @@ public final class FetchPersonsInteractor {
         this.fetchPersonsRepository = fetchPersonsRepository;
     }
 
+    @Override
     public Flowable<List<PersonModel>> fetchPersonsByName(final String personName) {
         return fetchPersonsRepository
                 .fetchPersonsByName(personName)

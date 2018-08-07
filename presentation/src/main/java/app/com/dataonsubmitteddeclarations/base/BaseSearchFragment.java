@@ -75,7 +75,7 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
 
     private void initRecyclerView() {
         if (recyclerView != null) {
-            personAdapter = new PersonAdapter();
+            personAdapter = new PersonAdapter(getContext());
             personAdapter.setTouchPdfIconListener(this);
             personAdapter.setTouchFavoriteListener(this);
             recyclerView.setAdapter(personAdapter);

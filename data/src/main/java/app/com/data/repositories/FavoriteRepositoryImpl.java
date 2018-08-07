@@ -9,7 +9,6 @@ import app.com.domain.interfaces.FavoriteRepository;
 import app.com.domain.models.PersonModel;
 import io.reactivex.Single;
 import io.realm.Realm;
-import io.realm.RealmModel;
 import io.realm.RealmResults;
 
 public class FavoriteRepositoryImpl implements FavoriteRepository {
@@ -29,9 +28,10 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
             public PersonModel call() {
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
-                final RealmModel model = realm.copyToRealmOrUpdate(transform(personModel));
+                realm.copyToRealmOrUpdate(transform(personModel));
                 realm.commitTransaction();
                 realm.close();
+                personModel.setDraftComment(false);
                 return personModel;
             }
         });
@@ -50,6 +50,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 boolean removeState = result.deleteAllFromRealm();
                 if (removeState) {
                     personModel.setComment("");
+                    personModel.setDraftComment(false);
                 }
                 realm.commitTransaction();
                 realm.close();
@@ -60,7 +61,6 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
 
     private DatabasePersonModel transform(PersonModel personModel) {
         final PersonModelToDatabase transformObject = new PersonModelToDatabase();
-        final DatabasePersonModel cachePersonModel = transformObject.transform(personModel);
-        return cachePersonModel;
+        return transformObject.transform(personModel);
     }
 }

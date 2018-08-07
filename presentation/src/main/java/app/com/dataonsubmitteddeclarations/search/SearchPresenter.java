@@ -1,37 +1,30 @@
 package app.com.dataonsubmitteddeclarations.search;
 
-
 import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import app.com.dataonsubmitteddeclarations.base.BasePresenter;
+import app.com.dataonsubmitteddeclarations.base.BaseSearchPresenter;
 import app.com.dataonsubmitteddeclarations.di.InjectHelper;
 import app.com.domain.interactors.FavoriteInteractor;
+import app.com.domain.interactors.FetchPersonsContract;
 import app.com.domain.interactors.FetchPersonsInteractor;
-import app.com.domain.interfaces.ThreadContract;
 import app.com.domain.models.PersonModel;
-import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 @InjectViewState
-public class SearchPresenter extends BasePresenter<SearchContract> implements SearchPresenterContract {
+public class SearchPresenter extends BaseSearchPresenter implements SearchPresenterContract {
 
-    @Inject
-    ThreadContract threadContract;
     @Inject
     FavoriteInteractor favoriteInteractor;
+
     @Inject
     @Named("search")
-    FetchPersonsInteractor fetchPersonsInteractor;
-
-    private String currQuery = "";
+    FetchPersonsContract fetchPersonsInteractor;
 
     @Override
     protected void onFirstViewAttach() {
@@ -39,64 +32,10 @@ public class SearchPresenter extends BasePresenter<SearchContract> implements Se
         InjectHelper.getMainAppComponent().inject(this);
     }
 
+
     @Override
-    public void lifeSearchByInputText(final Flowable<String> textViewFlowable) {
-        disposableManager.addDisposable(textViewFlowable
-                .filter(this::isEqualQuery)
-                .observeOn(threadContract.ui())
-                .switchMap(tmpQuery -> {
-                    currQuery = tmpQuery;
-                    startRequestUpdateUi();
-                    return getPersonList(tmpQuery);
-                })
-                .subscribe(
-                        this::successResponse,
-                        error -> {
-                            Timber.e(error, "lifeSearchByInputText Error fetch persons data by name ");
-                            showNoDataView();
-                        })
-        );
-    }
-
-    private Flowable<List<PersonModel>> getPersonList(String tmpQuery) {
-        return fetchPersonsInteractor
-                .fetchPersonsByName(tmpQuery)
-                .onErrorResumeNext(throwable -> {
-                    showNoDataView();
-                    Timber.e(throwable, "Fetch persons by name");
-                    return Flowable.empty();
-                });
-    }
-
-    private void startRequestUpdateUi() {
-        getViewState().hideNoDataView();
-        getViewState().hideList();
-        getViewState().showProgress();
-    }
-
-    private void successResponse(List<PersonModel> personModelList) {
-        if (personModelList.isEmpty()) {
-            showNoDataView();
-            return;
-        }
-        showList();
-        getViewState().renderPersonItems(personModelList);
-    }
-
-    private void showList() {
-        getViewState().hideNoDataView();
-        getViewState().hideProgress();
-        getViewState().showList();
-    }
-
-    private void showNoDataView() {
-        getViewState().hideProgress();
-        getViewState().hideList();
-        getViewState().showNoDataView();
-    }
-
-    public void dropCurrentQuery() {
-        currQuery = "";
+    protected FetchPersonsContract getFetchPersonsContract() {
+        return fetchPersonsInteractor;
     }
 
     @SuppressLint("TimberArgCount")
@@ -116,10 +55,6 @@ public class SearchPresenter extends BasePresenter<SearchContract> implements Se
 
     private void hideFavoriteProgressBar(final PersonModel personModel) {
         getViewState().hideFavoriteProgress(personModel);
-    }
-
-    private boolean isEqualQuery(final String tmpQuery) {
-        return !currQuery.equals(tmpQuery);
     }
 }
 
