@@ -29,7 +29,7 @@ public class SearchFragment extends BaseSearchFragment {
             if (args != null) {
                 favoritePersonModel = (PersonModel) args.get(FavoriteDialogFragment.SEND_FAVORITE_MODEL);
                 if (favoritePersonModel == null) return;
-//                favoritePersonModel.setDraftComment(true);
+                favoritePersonModel.setDraftComment(true);
                 searchPresenter.favoriteRequest(favoritePersonModel);
             }
         }

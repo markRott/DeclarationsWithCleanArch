@@ -8,6 +8,16 @@
     <string name="btn_add_update_comment">Обновить комментарий</string>
     <string name="btn_remove_from_favorite">Удалить</string>
     <string name="btn_cancel">Отмена</string>
+    <string name="comment_draft">Ожидание - %1$s</string>
+    <string name="comment_remove">Удаление - %1$s</string>
+    <string name="menu_favorite_item">Избранные</string>
 
-    <string name="menu_favorite_item">Favorite</string>
+    <string name="title_last_name">Фамилия: %1$s</string>
+    <string name="title_first_name">Имя: %1$s</string>
+    <string name="title_middle_name">Отчество: %1$s</string>
+    <string name="title_position">Должность: %1$s</string>
+    <string name="title_place_of_work">Место работы: %1$s</string>
+    <string name="title_comment">Комментарий: %1$s</string>
+
+
 </resources>

@@ -124,6 +124,7 @@ public class FavoriteDialogFragment extends DialogFragment {
     @OnClick(R.id.btn_remove_favorite)
     public void removeFromFavorite() {
         personModel.setFavoriteStatus(!FAVORITE);
+        personModel.setRemoveComment(true);
         sendDataAndDismiss();
     }
 

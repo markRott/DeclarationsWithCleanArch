@@ -1,7 +1,9 @@
 package app.com.dataonsubmitteddeclarations.search.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -52,48 +54,66 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         final PersonModel model = getItemByPosition(position);
         fillViews(holder, model);
         fillIcons(holder, model);
-        setupLikeClickListener(holder, model, position);
+        setupFavoriteClickListener(holder, model, position);
         setupPdfIconClickListener(holder, model, position);
     }
 
     private void fillViews(PersonItemHolder holder, final PersonModel model) {
-        holder.firstName.setText(model.getFirstName());
-        holder.lastName.setText(model.getLastName());
+        fillName(holder, model);
         fillPosition(holder, model);
         fillPlaceOfWork(holder, model);
-        fillMiddleName(holder, model);
         fillComment(holder, model);
         holder.prbFavorite.setVisibility(model.isProgressBarVisibilityState() ? VISIBLE : INVISIBLE);
     }
 
     private void fillPosition(PersonItemHolder holder, final PersonModel model) {
-        setupVisibilityState(holder, model.getPosition(), holder.position);
-        holder.position.setText(model.getPosition());
+        setupVisibilityState(model.getPosition(), holder.position);
+        holder.position.setText(getTextWithPrefix(R.string.title_position, model.getPosition()));
     }
 
     private void fillPlaceOfWork(PersonItemHolder holder, final PersonModel model) {
-        setupVisibilityState(holder, model.getPlaceOfWork(), holder.placeOfWork);
-        holder.placeOfWork.setText(model.getPlaceOfWork());
+        setupVisibilityState(model.getPlaceOfWork(), holder.placeOfWork);
+        holder.placeOfWork.setText(getTextWithPrefix(R.string.title_place_of_work, model.getPlaceOfWork()));
     }
 
-    private void fillMiddleName(PersonItemHolder holder, final PersonModel model) {
-        setupVisibilityState(holder, model.getMiddleName(), holder.middleName);
-        holder.middleName.setText(model.getMiddleName());
+    private void fillName(PersonItemHolder holder, final PersonModel model) {
+        holder.firstName.setText(getTextWithPrefix(R.string.title_first_name, model.getFirstName()));
+        holder.lastName.setText(getTextWithPrefix(R.string.title_last_name, model.getLastName()));
+        setupVisibilityState(model.getMiddleName(), holder.middleName);
+        holder.middleName.setText(getTextWithPrefix(R.string.title_middle_name, model.getMiddleName()));
     }
 
     private void fillComment(PersonItemHolder holder, final PersonModel model) {
-        setupVisibilityState(holder, model.getComment(), holder.comment);
-        holder.comment.setText(model.getComment());
+        setupVisibilityState(model.getComment(), holder.comment);
+        final String comment = setupComment(model);
+        holder.comment.setText(comment);
         holder.comment.setTextColor(model.isDraftComment() ?
                 ContextCompat.getColor(getContext(), R.color.colorCommentDraft) :
                 ContextCompat.getColor(getContext(), R.color.colorCommentNormal));
     }
 
-    private void setupVisibilityState(PersonItemHolder holder, final String data, View view) {
+    private String setupComment(final PersonModel model) {
+        String comment;
+        if (model.isRemoveComment()) {
+            comment = getTextWithPrefix(R.string.comment_remove, model.getComment());
+        } else if (model.isDraftComment()) {
+            comment = getTextWithPrefix(R.string.comment_draft, model.getComment());
+        } else {
+            comment = getTextWithPrefix(R.string.title_comment, model.getComment());
+        }
+        return comment;
+    }
+
+    private String getTextWithPrefix(@StringRes int id, String text) {
+        final Resources res = getContext().getResources();
+        return String.format(res.getString(id), text);
+    }
+
+    private void setupVisibilityState(final String data, final View view) {
         view.setVisibility(TextUtils.isEmpty(data) ? GONE : VISIBLE);
     }
 
-    private void fillIcons(PersonItemHolder holder, final PersonModel model) {
+    private void fillIcons(final PersonItemHolder holder, final PersonModel model) {
         holder.ivFavorite.setImageResource(model.isFavoriteStatus() ? R.drawable.ic_favorite : R.drawable.ic_unfavorite);
         holder.ivFavorite.setVisibility(model.isProgressBarVisibilityState() ? INVISIBLE : VISIBLE);
         holder.ivPdf.setImageResource(R.drawable.ic_pdf);
@@ -108,7 +128,7 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         }
     }
 
-    private void setupLikeClickListener(
+    private void setupFavoriteClickListener(
             final PersonItemHolder holder,
             final PersonModel model,
             int position) {

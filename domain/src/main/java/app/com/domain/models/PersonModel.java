@@ -17,6 +17,7 @@ public class PersonModel implements Serializable {
     private boolean favoriteStatus;
     private int positionInAdapter = -1;
     private boolean progressBarVisibilityState;
+    private boolean removeComment;
     private boolean draftComment = true;
 
     public String getId() {
@@ -67,6 +68,10 @@ public class PersonModel implements Serializable {
         return draftComment;
     }
 
+    public boolean isRemoveComment() {
+        return removeComment;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -113,6 +118,10 @@ public class PersonModel implements Serializable {
 
     public void setDraftComment(boolean draftComment) {
         this.draftComment = draftComment;
+    }
+
+    public void setRemoveComment(boolean removeComment) {
+        this.removeComment = removeComment;
     }
 
     @Override

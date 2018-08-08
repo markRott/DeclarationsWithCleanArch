@@ -11,7 +11,6 @@ import app.com.dataonsubmitteddeclarations.base.BaseSearchPresenter;
 import app.com.dataonsubmitteddeclarations.di.InjectHelper;
 import app.com.domain.interactors.FavoriteInteractor;
 import app.com.domain.interactors.FetchPersonsContract;
-import app.com.domain.interactors.FetchPersonsInteractor;
 import app.com.domain.models.PersonModel;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -40,6 +39,7 @@ public class SearchPresenter extends BaseSearchPresenter implements SearchPresen
 
     @SuppressLint("TimberArgCount")
     public void favoriteRequest(final PersonModel personModel) {
+//        updatePersonModel(personModel);
         getViewState().showFavoriteProgress(personModel);
         final Disposable disposable = favoriteInteractor
                 .favoriteRequest(personModel)
@@ -52,6 +52,15 @@ public class SearchPresenter extends BaseSearchPresenter implements SearchPresen
                 );
         disposableManager.addDisposable(disposable);
     }
+
+//    private void updatePersonModel(final PersonModel personModel) {
+//        if (personModel.isFavoriteStatus()) {
+//            personModel.setDraftComment(true);
+//        } else {
+//            personModel.setDraftComment(false);
+//            personModel.setComment("");
+//        }
+//    }
 
     private void hideFavoriteProgressBar(final PersonModel personModel) {
         getViewState().hideFavoriteProgress(personModel);

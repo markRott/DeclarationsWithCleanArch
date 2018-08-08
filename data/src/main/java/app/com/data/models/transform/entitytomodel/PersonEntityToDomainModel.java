@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.com.data.models.networkentity.PersonEntity;
-import app.com.data.models.transform.databasetodonain.DatabasePersonModel;
 import app.com.domain.models.PersonModel;
 
 public class PersonEntityToDomainModel {
@@ -29,7 +28,7 @@ public class PersonEntityToDomainModel {
         final PersonModel personModel = new PersonModel();
         if (personEntity != null) {
             personModel.setId(personEntity.getId());
-            divideNameFromPatronymic(personModel, personEntity);
+            divideNameFromMiddleName(personModel, personEntity);
             personModel.setLastName(personEntity.getLastName().toLowerCase());
             personModel.setPlaceOfWork(personEntity.getPlaceOfWork());
             personModel.setPosition(personEntity.getPosition());
@@ -39,7 +38,7 @@ public class PersonEntityToDomainModel {
         return personModel;
     }
 
-    private void divideNameFromPatronymic(
+    private void divideNameFromMiddleName(
             final PersonModel personModel,
             final PersonEntity personEntity) {
         final String[] nameArray = personEntity.getFirstName().split(" ");

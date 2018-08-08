@@ -1,7 +1,6 @@
 package app.com.data.repositories;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import app.com.data.models.transform.databasetodonain.DatabasePersonModel;
 import app.com.data.models.transform.domaintodatabase.PersonModelToDatabase;
@@ -16,22 +15,23 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     @Override
     public Single<PersonModel> executeFavoriteRequest(final PersonModel personModel) {
         if (personModel.isFavoriteStatus()) {
-            return addFavoriteRequest(personModel).delay(5, TimeUnit.SECONDS);
+            return addFavoriteRequest(personModel);
         } else {
-            return removeFromFavoriteRequest(personModel).delay(5, TimeUnit.SECONDS);
+            return removeFromFavoriteRequest(personModel);
         }
     }
 
     private Single<PersonModel> addFavoriteRequest(final PersonModel personModel) {
         return Single.fromCallable(new Callable<PersonModel>() {
             @Override
-            public PersonModel call() {
+            public PersonModel call() throws InterruptedException {
+                Thread.sleep(5000);
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 realm.copyToRealmOrUpdate(transform(personModel));
+                personModel.setDraftComment(false);
                 realm.commitTransaction();
                 realm.close();
-                personModel.setDraftComment(false);
                 return personModel;
             }
         });
@@ -40,23 +40,35 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     private Single<PersonModel> removeFromFavoriteRequest(final PersonModel personModel) {
         return Single.fromCallable(new Callable<PersonModel>() {
             @Override
-            public PersonModel call() {
+            public PersonModel call() throws InterruptedException {
+                Thread.sleep(5000);
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
-                final RealmResults<DatabasePersonModel> result = realm
-                        .where(DatabasePersonModel.class)
-                        .equalTo(DatabasePersonModel.ID, personModel.getId())
-                        .findAll();
-                boolean removeState = result.deleteAllFromRealm();
-                if (removeState) {
-                    personModel.setComment("");
-                    personModel.setDraftComment(false);
-                }
+                final RealmResults<DatabasePersonModel> result = getAllObjects(realm, personModel);
+                final boolean removeState = result.deleteAllFromRealm();
+                updateModel(personModel, removeState);
                 realm.commitTransaction();
                 realm.close();
                 return personModel;
             }
         });
+    }
+
+    private RealmResults<DatabasePersonModel> getAllObjects(
+            final Realm realm,
+            final PersonModel personModel) {
+        return realm
+                .where(DatabasePersonModel.class)
+                .equalTo(DatabasePersonModel.ID, personModel.getId())
+                .findAll();
+    }
+
+    private void updateModel(final PersonModel personModel, boolean removeState) {
+        if (removeState) {
+            personModel.setComment("");
+            personModel.setDraftComment(false);
+            personModel.setRemoveComment(false);
+        }
     }
 
     private DatabasePersonModel transform(PersonModel personModel) {
