@@ -52,20 +52,19 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
     RecyclerView recyclerView;
 
     protected PersonAdapter personAdapter;
-
-    private Unbinder unbinder;
+    protected Unbinder unbinder;
     private PersonModel favoritePersonModel;
 
-    @Nullable
-    @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_search, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+//    @Nullable
+//    @Override
+//    public View onCreateView(
+//            @NonNull LayoutInflater inflater,
+//            @Nullable ViewGroup container,
+//            @Nullable Bundle savedInstanceState) {
+//        final View view = inflater.inflate(R.layout.fragment_search, container, false);
+//        unbinder = ButterKnife.bind(this, view);
+//        return view;
+//    }
 
     @Override
     public void onDestroyView() {
@@ -210,7 +209,7 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
         }
     }
 
-    public abstract SearchPresenterContract getPresenter();
+    protected abstract SearchPresenterContract getPresenter();
 
     protected abstract void removeItemFromFavoriteList(final PersonModel personModel);
 }

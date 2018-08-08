@@ -19,6 +19,6 @@
     <string name="title_place_of_work">Место работы: %1$s</string>
     <string name="title_comment">Комментарий: %1$s</string>
     <string name="search_screen">Экран поиска</string>
-
+    <string name="favorite_screen">Экран избранное</string>
 
 </resources>

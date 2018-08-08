@@ -53,7 +53,7 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> 
         getViewState().showProgress();
     }
 
-    private Flowable<List<PersonModel>> getPersonList(String tmpQuery) {
+    protected Flowable<List<PersonModel>> getPersonList(String tmpQuery) {
         return getFetchPersonsContract()
                 .fetchPersonsByName(tmpQuery)
                 .onErrorResumeNext(throwable -> {
@@ -63,13 +63,13 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> 
                 });
     }
 
-    private void showNoDataView() {
+    protected void showNoDataView() {
         getViewState().hideProgress();
         getViewState().hideList();
         getViewState().showNoDataView();
     }
 
-    private void successResponse(final List<PersonModel> personModelList) {
+    protected void successResponse(final List<PersonModel> personModelList) {
         if (personModelList == null || personModelList.isEmpty()) {
             showNoDataView();
             return;

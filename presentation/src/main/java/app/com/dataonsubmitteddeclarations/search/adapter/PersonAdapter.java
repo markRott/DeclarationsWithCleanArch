@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.apache.commons.text.WordUtils;
+
 import app.com.dataonsubmitteddeclarations.R;
 import app.com.dataonsubmitteddeclarations.base.BaseRecyclerAdapter;
 import app.com.dataonsubmitteddeclarations.search.adapter.listeners.TouchFavoriteListener;
@@ -66,21 +68,21 @@ public class PersonAdapter extends BaseRecyclerAdapter<PersonModel, PersonAdapte
         holder.prbFavorite.setVisibility(model.isProgressBarVisibilityState() ? VISIBLE : INVISIBLE);
     }
 
+    private void fillName(PersonItemHolder holder, final PersonModel model) {
+        holder.firstName.setText(getTextWithPrefix(R.string.title_first_name, WordUtils.capitalize(model.getFirstName())));
+        holder.lastName.setText(getTextWithPrefix(R.string.title_last_name, WordUtils.capitalize(model.getLastName())));
+        setupVisibilityState(model.getMiddleName(), holder.middleName);
+        holder.middleName.setText(getTextWithPrefix(R.string.title_middle_name, WordUtils.capitalize(model.getMiddleName())));
+    }
+
     private void fillPosition(PersonItemHolder holder, final PersonModel model) {
         setupVisibilityState(model.getPosition(), holder.position);
-        holder.position.setText(getTextWithPrefix(R.string.title_position, model.getPosition()));
+        holder.position.setText(getTextWithPrefix(R.string.title_position, WordUtils.capitalize(model.getPosition())));
     }
 
     private void fillPlaceOfWork(PersonItemHolder holder, final PersonModel model) {
         setupVisibilityState(model.getPlaceOfWork(), holder.placeOfWork);
-        holder.placeOfWork.setText(getTextWithPrefix(R.string.title_place_of_work, model.getPlaceOfWork()));
-    }
-
-    private void fillName(PersonItemHolder holder, final PersonModel model) {
-        holder.firstName.setText(getTextWithPrefix(R.string.title_first_name, model.getFirstName()));
-        holder.lastName.setText(getTextWithPrefix(R.string.title_last_name, model.getLastName()));
-        setupVisibilityState(model.getMiddleName(), holder.middleName);
-        holder.middleName.setText(getTextWithPrefix(R.string.title_middle_name, model.getMiddleName()));
+        holder.placeOfWork.setText(getTextWithPrefix(R.string.title_place_of_work, WordUtils.capitalize(model.getPlaceOfWork())));
     }
 
     private void fillComment(PersonItemHolder holder, final PersonModel model) {
