@@ -4,9 +4,11 @@ import java.util.List;
 
 import app.com.dataonsubmitteddeclarations.search.SearchContract;
 import app.com.dataonsubmitteddeclarations.search.SearchPresenterContract;
+import app.com.domain.interactors.FavoriteInteractor;
 import app.com.domain.interactors.FetchPersonsContract;
 import app.com.domain.models.PersonModel;
 import io.reactivex.Flowable;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> implements SearchPresenterContract {
@@ -67,8 +69,8 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> 
         getViewState().showNoDataView();
     }
 
-    private void successResponse(List<PersonModel> personModelList) {
-        if (personModelList.isEmpty()) {
+    private void successResponse(final List<PersonModel> personModelList) {
+        if (personModelList == null || personModelList.isEmpty()) {
             showNoDataView();
             return;
         }
@@ -82,5 +84,26 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> 
         getViewState().showList();
     }
 
+    @Override
+    public void favoriteRequest(final PersonModel personModel) {
+        getViewState().showFavoriteProgress(personModel);
+        final Disposable disposable = getFavoriteInteractor()
+                .favoriteRequest(personModel)
+                .subscribe(
+                        this::hideFavoriteProgressBar,
+                        error -> {
+                            hideFavoriteProgressBar(personModel);
+                            Timber.e(error, "Favorite request error");
+                        }
+                );
+        disposableManager.addDisposable(disposable);
+    }
+
+    private void hideFavoriteProgressBar(final PersonModel personModel) {
+        getViewState().hideFavoriteProgress(personModel);
+    }
+
     protected abstract FetchPersonsContract getFetchPersonsContract();
+
+    protected abstract FavoriteInteractor getFavoriteInteractor();
 }

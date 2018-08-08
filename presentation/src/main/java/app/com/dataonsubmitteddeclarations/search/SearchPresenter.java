@@ -20,7 +20,6 @@ public class SearchPresenter extends BaseSearchPresenter implements SearchPresen
 
     @Inject
     FavoriteInteractor favoriteInteractor;
-
     @Inject
     @Named("search")
     FetchPersonsContract fetchPersonsInteractor;
@@ -37,34 +36,29 @@ public class SearchPresenter extends BaseSearchPresenter implements SearchPresen
         return fetchPersonsInteractor;
     }
 
-    @SuppressLint("TimberArgCount")
-    public void favoriteRequest(final PersonModel personModel) {
-//        updatePersonModel(personModel);
-        getViewState().showFavoriteProgress(personModel);
-        final Disposable disposable = favoriteInteractor
-                .favoriteRequest(personModel)
-                .subscribe(
-                        this::hideFavoriteProgressBar,
-                        error -> {
-                            hideFavoriteProgressBar(personModel);
-                            Timber.e(error, "Favorite request error");
-                        }
-                );
-        disposableManager.addDisposable(disposable);
+    @Override
+    protected FavoriteInteractor getFavoriteInteractor() {
+        return favoriteInteractor;
     }
 
-//    private void updatePersonModel(final PersonModel personModel) {
-//        if (personModel.isFavoriteStatus()) {
-//            personModel.setDraftComment(true);
-//        } else {
-//            personModel.setDraftComment(false);
-//            personModel.setComment("");
-//        }
+//    @SuppressLint("TimberArgCount")
+//    public void favoriteRequest(final PersonModel personModel) {
+//        getViewState().showFavoriteProgress(personModel);
+//        final Disposable disposable = favoriteInteractor
+//                .favoriteRequest(personModel)
+//                .subscribe(
+//                        this::hideFavoriteProgressBar,
+//                        error -> {
+//                            hideFavoriteProgressBar(personModel);
+//                            Timber.e(error, "Favorite request error");
+//                        }
+//                );
+//        disposableManager.addDisposable(disposable);
 //    }
-
-    private void hideFavoriteProgressBar(final PersonModel personModel) {
-        getViewState().hideFavoriteProgress(personModel);
-    }
+//
+//    private void hideFavoriteProgressBar(final PersonModel personModel) {
+//        getViewState().hideFavoriteProgress(personModel);
+//    }
 }
 
 

@@ -1,6 +1,7 @@
 package app.com.data.repositories;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -22,9 +23,7 @@ public class FetchPersonsFromDatabase implements FetchPersonsRepository {
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 final List<DatabasePersonModel> result = query(realm, personName);
-                final DatabasePersonModelToDomain converter = new DatabasePersonModelToDomain();
-                final List<PersonModel> personModelList = converter.transform(result);
-                Timber.d("Fetch local data = %s", Arrays.toString(personModelList.toArray()));
+                final List<PersonModel> personModelList = convertDatabaseModelToDomain(result);
                 realm.commitTransaction();
                 realm.close();
                 return personModelList;
@@ -43,5 +42,11 @@ public class FetchPersonsFromDatabase implements FetchPersonsRepository {
                 .contains(DatabasePersonModel.MIDDLE_NAME, personName)
                 .endGroup()
                 .findAll();
+    }
+
+    private final List<PersonModel> convertDatabaseModelToDomain(final List<DatabasePersonModel> result){
+        if(result == null) return Collections.emptyList();
+        final DatabasePersonModelToDomain converter = new DatabasePersonModelToDomain();
+        return converter.transform(result);
     }
 }

@@ -14,11 +14,12 @@ public class PersonModel implements Serializable {
     // custom fields
     private String comment;
     private String middleName;
+    private boolean draftComment;
+    private boolean removeComment;
     private boolean favoriteStatus;
     private int positionInAdapter = -1;
+    private boolean removeFavoriteItem;
     private boolean progressBarVisibilityState;
-    private boolean removeComment;
-    private boolean draftComment = true;
 
     public String getId() {
         return id;
@@ -72,6 +73,10 @@ public class PersonModel implements Serializable {
         return removeComment;
     }
 
+    public boolean isRemoveFavoriteItem() {
+        return removeFavoriteItem;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -122,6 +127,10 @@ public class PersonModel implements Serializable {
 
     public void setRemoveComment(boolean removeComment) {
         this.removeComment = removeComment;
+    }
+
+    public void setRemoveFavoriteItem(boolean removeFavoriteItem) {
+        this.removeFavoriteItem = removeFavoriteItem;
     }
 
     @Override

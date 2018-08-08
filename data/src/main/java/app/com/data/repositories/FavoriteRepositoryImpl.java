@@ -46,7 +46,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 realm.beginTransaction();
                 final RealmResults<DatabasePersonModel> result = getAllObjects(realm, personModel);
                 final boolean removeState = result.deleteAllFromRealm();
-                updateModel(personModel, removeState);
+                updateModelAfterRemove(personModel, removeState);
                 realm.commitTransaction();
                 realm.close();
                 return personModel;
@@ -63,11 +63,12 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
                 .findAll();
     }
 
-    private void updateModel(final PersonModel personModel, boolean removeState) {
+    private void updateModelAfterRemove(final PersonModel personModel, boolean removeState) {
         if (removeState) {
             personModel.setComment("");
             personModel.setDraftComment(false);
             personModel.setRemoveComment(false);
+            personModel.setRemoveFavoriteItem(true);
         }
     }
 

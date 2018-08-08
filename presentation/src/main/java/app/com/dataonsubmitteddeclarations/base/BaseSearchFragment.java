@@ -1,5 +1,7 @@
 package app.com.dataonsubmitteddeclarations.base;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import app.com.dataonsubmitteddeclarations.R;
+import app.com.dataonsubmitteddeclarations.favorite.FavoriteDialogFragment;
+import app.com.dataonsubmitteddeclarations.managers.Router;
 import app.com.dataonsubmitteddeclarations.managers.RouterData;
 import app.com.dataonsubmitteddeclarations.search.SearchContract;
 import app.com.dataonsubmitteddeclarations.search.SearchPresenterContract;
@@ -47,8 +51,10 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
     @BindView(R.id.rcv_search)
     RecyclerView recyclerView;
 
+    protected PersonAdapter personAdapter;
+
     private Unbinder unbinder;
-    private PersonAdapter personAdapter;
+    private PersonModel favoritePersonModel;
 
     @Nullable
     @Override
@@ -158,6 +164,7 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
         if (itemPosition >= 0) {
             personModel.setProgressBarVisibilityState(visibilityState);
             personAdapter.notifyItemChanged(itemPosition);
+            removeItemFromFavoriteList(personModel);
         } else {
             Timber.e("Wrong item position");
         }
@@ -190,5 +197,20 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
         router.openFavoriteDialog(data);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Router.FAVORITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            final Bundle args = data.getExtras();
+            if (args != null) {
+                favoritePersonModel = (PersonModel) args.get(FavoriteDialogFragment.SEND_FAVORITE_MODEL);
+                if (favoritePersonModel == null) return;
+                favoritePersonModel.setDraftComment(true);
+                getPresenter().favoriteRequest(favoritePersonModel);
+            }
+        }
+    }
+
     public abstract SearchPresenterContract getPresenter();
+
+    protected abstract void removeItemFromFavoriteList(final PersonModel personModel);
 }
