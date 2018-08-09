@@ -1,4 +1,4 @@
-package app.com.data.models.transform;
+package app.com.data.models.transform.entitytomodel;
 
 import app.com.data.models.networkentity.PageEntity;
 import app.com.domain.models.PageModel;

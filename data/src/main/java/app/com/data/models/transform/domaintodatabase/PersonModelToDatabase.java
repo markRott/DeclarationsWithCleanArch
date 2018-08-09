@@ -1,16 +1,17 @@
-package app.com.data.models.transform;
+package app.com.data.models.transform.domaintodatabase;
 
-import app.com.data.models.CachePersonModel;
+import app.com.data.models.transform.databasetodonain.DatabasePersonModel;
 import app.com.domain.models.PersonModel;
 
-public class PersonModelToCache {
+public class PersonModelToDatabase {
 
-    public CachePersonModel transform(PersonModel personModel) {
-        final CachePersonModel cache = new CachePersonModel();
+    public DatabasePersonModel transform(PersonModel personModel) {
+        final DatabasePersonModel cache = new DatabasePersonModel();
         if (personModel != null) {
             cache.setId(personModel.getId());
             cache.setFirstName(personModel.getFirstName());
-            cache.setLastName(personModel.getLastName());
+            cache.setMiddleName(personModel.getMiddleName());
+            cache.setLastName(personModel.getLastName().toLowerCase());
             cache.setPlaceOfWork(personModel.getPlaceOfWork());
             cache.setPosition(personModel.getPosition());
             cache.setLinkPdf(personModel.getLinkPdf());

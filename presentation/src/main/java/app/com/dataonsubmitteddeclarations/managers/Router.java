@@ -7,8 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import org.jetbrains.annotations.NotNull;
 
 import app.com.dataonsubmitteddeclarations.R;
+import app.com.dataonsubmitteddeclarations.favorite.FavoriteDialogFragment;
+import app.com.dataonsubmitteddeclarations.favorite.FavoriteFragment;
 import app.com.dataonsubmitteddeclarations.pdf.PdfViewerFragment;
-import app.com.dataonsubmitteddeclarations.search.FavoriteDialogFragment;
 import app.com.dataonsubmitteddeclarations.search.SearchFragment;
 
 public class Router {
@@ -23,6 +24,15 @@ public class Router {
         final SearchFragment fragment = SearchFragment.newInstance();
         final FragmentTransaction transaction = common(fragmentManager, fragment);
         transaction.commit();
+    }
+
+    public void openFavoriteSearchFragment(final FragmentManager fragmentManager) {
+        final String tag = FavoriteFragment.class.getSimpleName();
+        final Fragment currFragment = fragmentManager.findFragmentByTag(tag);
+        if (currFragment != null) return;
+        final FavoriteFragment fragment = FavoriteFragment.newInstance();
+        final FragmentTransaction transaction = common(fragmentManager, fragment);
+        transaction.addToBackStack(fragment.getClass().getSimpleName()).commit();
     }
 
     public void openPdfFragment(final RouterData routerData) {

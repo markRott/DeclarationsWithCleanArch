@@ -15,24 +15,12 @@ public class PageEntity {
         return totalItems;
     }
 
-    public void setTotalItems(String totalItems) {
-        this.totalItems = totalItems;
-    }
-
     public int getBatchSize() {
         return batchSize;
     }
 
-    public void setBatchSize(int batchSize) {
-        this.batchSize = batchSize;
-    }
-
     public int getCurrentPage() {
         return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
     }
 
     @Override

@@ -22,8 +22,4 @@ public class ContextModule {
     public Context provideContext() {
         return application;
     }
-
-    public interface Expose {
-        Context context();
-    }
 }

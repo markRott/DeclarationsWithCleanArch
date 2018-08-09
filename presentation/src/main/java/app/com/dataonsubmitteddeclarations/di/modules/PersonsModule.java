@@ -1,14 +1,17 @@
 package app.com.dataonsubmitteddeclarations.di.modules;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import app.com.data.network.ApplicationApi;
 import app.com.data.repositories.FavoriteRepositoryImpl;
-import app.com.data.repositories.PersonsRepositoryImpl;
+import app.com.data.repositories.FetchPersonsFromDatabase;
+import app.com.data.repositories.FetchPersonsFromNetwork;
 import app.com.domain.interactors.FavoriteInteractor;
-import app.com.domain.interactors.PersonsInteractor;
+import app.com.domain.interactors.FetchPersonsContract;
+import app.com.domain.interactors.FetchPersonsInteractor;
 import app.com.domain.interfaces.FavoriteRepository;
-import app.com.domain.interfaces.PersonsRepository;
+import app.com.domain.interfaces.FetchPersonsRepository;
 import app.com.domain.interfaces.ThreadContract;
 import dagger.Module;
 import dagger.Provides;
@@ -18,17 +21,35 @@ public class PersonsModule {
 
     @Provides
     @Singleton
-    public PersonsRepository providePersonRepository(final ApplicationApi applicationApi) {
-        return new PersonsRepositoryImpl(applicationApi);
+    @Named("search")
+    public FetchPersonsRepository provideSearchPersonRepository(final ApplicationApi applicationApi) {
+        return new FetchPersonsFromNetwork(applicationApi);
     }
 
     @Provides
     @Singleton
-    public PersonsInteractor providePersonsInteractor(
+    @Named("search")
+    public FetchPersonsContract provideSearchPersonsInteractor(
             final ThreadContract threadContract,
-            final PersonsRepository repository) {
+            @Named("search") final FetchPersonsRepository repository) {
+        return new FetchPersonsInteractor(threadContract, repository);
+    }
 
-        return new PersonsInteractor(threadContract, repository);
+    @Provides
+    @Singleton
+    @Named("favorite")
+    public FetchPersonsRepository provideSearchFavoritePersonRepository() {
+        return new FetchPersonsFromDatabase();
+    }
+
+    @Provides
+    @Singleton
+    @Named("favorite")
+    public FetchPersonsContract provideFavoritePersonsInteractor(
+            final ThreadContract threadContract,
+            @Named("favorite") final FetchPersonsRepository repository) {
+
+        return new FetchPersonsInteractor(threadContract, repository);
     }
 
     @Provides
@@ -44,14 +65,5 @@ public class PersonsModule {
             final FavoriteRepository favoriteRepository) {
 
         return new FavoriteInteractor(threadContract, favoriteRepository);
-    }
-
-    public interface Expose {
-
-        PersonsRepository personRepository();
-
-        PersonsInteractor personsInteractor();
-
-        FavoriteInteractor favoriteInteractor();
     }
 }

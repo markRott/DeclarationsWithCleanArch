@@ -1,4 +1,4 @@
-package app.com.data.models.transform;
+package app.com.data.models.transform.entitytomodel;
 
 import java.util.Collections;
 import java.util.List;

@@ -11,6 +11,7 @@ import app.com.dataonsubmitteddeclarations.di.modules.PersonsModule;
 import app.com.dataonsubmitteddeclarations.di.modules.RouterModule;
 import app.com.dataonsubmitteddeclarations.di.modules.ThreadModule;
 import app.com.dataonsubmitteddeclarations.di.modules.UtilsModule;
+import app.com.dataonsubmitteddeclarations.favorite.FavoriteSearchPresenter;
 import app.com.dataonsubmitteddeclarations.search.SearchPresenter;
 import dagger.Component;
 
@@ -30,4 +31,6 @@ public interface MainAppComponent {
     void inject(BaseFragment baseFragment);
 
     void inject(SearchPresenter searchPresenter);
+
+    void inject(FavoriteSearchPresenter favoriteSearchPresenter);
 }

@@ -15,8 +15,4 @@ public class ThreadModule {
     public ThreadContract provideThreadContract() {
         return new ThreadContractImpl();
     }
-
-    public interface Expose {
-        ThreadContract threadContract();
-    }
 }

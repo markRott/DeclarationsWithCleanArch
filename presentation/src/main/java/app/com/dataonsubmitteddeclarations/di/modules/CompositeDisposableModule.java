@@ -13,8 +13,6 @@ public class CompositeDisposableModule {
     @SuppressLint("TimberArgCount")
     @Provides
     public CompositeDisposableManager provideCompositeDisposableManager() {
-        CompositeDisposableManager manager = new CompositeDisposableManager();
-        Timber.d("provideCompositeDisposableManager", manager.toString());
-        return manager;
+        return new CompositeDisposableManager();
     }
 }

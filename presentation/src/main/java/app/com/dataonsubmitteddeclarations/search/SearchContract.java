@@ -27,5 +27,5 @@ public interface SearchContract extends MvpView {
 
     void showFavoriteProgress(final PersonModel personModel);
 
-    void hideFavoriteProgress(final PersonModel personModel);
+    void hideFavoriteProgressAndUpdateUi(final PersonModel personModel);
 }

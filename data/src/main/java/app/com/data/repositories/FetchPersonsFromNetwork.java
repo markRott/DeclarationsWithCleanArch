@@ -3,21 +3,20 @@ package app.com.data.repositories;
 import java.util.List;
 
 import app.com.data.models.networkentity.PersonsEntity;
-import app.com.data.models.transform.PersonsEntityToDomainModel;
+import app.com.data.models.transform.entitytomodel.PersonsEntityToDomainModel;
 import app.com.data.network.ApplicationApi;
-import app.com.domain.interfaces.PersonsRepository;
+import app.com.domain.interfaces.FetchPersonsRepository;
 import app.com.domain.models.PersonModel;
 import app.com.domain.models.PersonsModel;
 import io.reactivex.Flowable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-import timber.log.Timber;
 
-public class PersonsRepositoryImpl implements PersonsRepository {
+public class FetchPersonsFromNetwork implements FetchPersonsRepository {
 
     private final ApplicationApi api;
 
-    public PersonsRepositoryImpl(final ApplicationApi api) {
+    public FetchPersonsFromNetwork(final ApplicationApi api) {
         this.api = api;
     }
 

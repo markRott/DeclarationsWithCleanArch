@@ -13,8 +13,12 @@ public class PersonModel implements Serializable {
 
     // custom fields
     private String comment;
+    private String middleName;
+    private boolean draftComment;
+    private boolean removeComment;
     private boolean favoriteStatus;
     private int positionInAdapter = -1;
+    private boolean removeFavoriteItem;
     private boolean progressBarVisibilityState;
 
     public String getId() {
@@ -26,35 +30,51 @@ public class PersonModel implements Serializable {
     }
 
     public String getPosition() {
-        return position;
+        return position == null ? "" : position;
     }
 
     public String getPlaceOfWork() {
-        return placeOfWork;
+        return placeOfWork == null ? "" : placeOfWork;
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName == null ? "" : lastName;
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstName == null ? "" : firstName;
     }
 
     public String getComment() {
-        return comment;
-    }
-
-    public boolean isFavoriteStatus() {
-        return favoriteStatus;
+        return comment == null ? "" : comment;
     }
 
     public int getPositionInAdapter() {
         return positionInAdapter;
     }
 
+    public String getMiddleName() {
+        return middleName == null ? "" : middleName;
+    }
+
+    public boolean isFavoriteStatus() {
+        return favoriteStatus;
+    }
+
     public boolean isProgressBarVisibilityState() {
         return progressBarVisibilityState;
+    }
+
+    public boolean isDraftComment() {
+        return draftComment;
+    }
+
+    public boolean isRemoveComment() {
+        return removeComment;
+    }
+
+    public boolean isRemoveFavoriteItem() {
+        return removeFavoriteItem;
     }
 
     public void setId(String id) {
@@ -93,8 +113,24 @@ public class PersonModel implements Serializable {
         this.positionInAdapter = positionInAdapter;
     }
 
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
     public void setProgressBarVisibilityState(boolean progressBarVisibilityState) {
         this.progressBarVisibilityState = progressBarVisibilityState;
+    }
+
+    public void setDraftComment(boolean draftComment) {
+        this.draftComment = draftComment;
+    }
+
+    public void setRemoveComment(boolean removeComment) {
+        this.removeComment = removeComment;
+    }
+
+    public void setRemoveFavoriteItem(boolean removeFavoriteItem) {
+        this.removeFavoriteItem = removeFavoriteItem;
     }
 
     @Override

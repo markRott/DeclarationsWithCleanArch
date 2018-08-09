@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations.search;
+package app.com.dataonsubmitteddeclarations.favorite;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -60,7 +60,11 @@ public class FavoriteDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.dialog_favorite, null);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -120,6 +124,7 @@ public class FavoriteDialogFragment extends DialogFragment {
     @OnClick(R.id.btn_remove_favorite)
     public void removeFromFavorite() {
         personModel.setFavoriteStatus(!FAVORITE);
+        personModel.setRemoveComment(true);
         sendDataAndDismiss();
     }
 
@@ -138,6 +143,5 @@ public class FavoriteDialogFragment extends DialogFragment {
         favoriteIntent.putExtra(SEND_FAVORITE_MODEL, personModel);
         getTargetFragment().onActivityResult(
                 getTargetRequestCode(), Activity.RESULT_OK, favoriteIntent);
-
     }
 }

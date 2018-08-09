@@ -1,4 +1,4 @@
-package app.com.dataonsubmitteddeclarations.search.adapter;
+package app.com.dataonsubmitteddeclarations.search.adapter.listeners;
 
 public interface TouchFavoriteListener<T> {
 

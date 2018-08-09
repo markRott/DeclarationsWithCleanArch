@@ -1,6 +1,5 @@
 package app.com.dataonsubmitteddeclarations.pdf;
 
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -27,7 +26,8 @@ public class AppWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && request != null && request.getUrl() != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && request != null
+                && request.getUrl() != null) {
             String url = request.getUrl().toString();
             view.loadUrl(url);
             return true;
@@ -36,13 +36,7 @@ public class AppWebViewClient extends WebViewClient {
     }
 
     @Override
-    public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        Timber.d("onPageStarted");
-    }
-
-    @Override
     public void onPageFinished(WebView view, String url) {
-        Timber.d(url);
         if (weakReference.get() != null) {
             weakReference.get().onFinishLoading();
         }

@@ -1,12 +1,11 @@
-package app.com.domain.interfaces;
+package app.com.domain.interactors;
 
 import java.util.List;
 
 import app.com.domain.models.PersonModel;
-import app.com.domain.models.PersonsModel;
 import io.reactivex.Flowable;
 
-public interface PersonsRepository {
+public interface FetchPersonsContract {
 
     Flowable<List<PersonModel>> fetchPersonsByName(final String personName);
 }

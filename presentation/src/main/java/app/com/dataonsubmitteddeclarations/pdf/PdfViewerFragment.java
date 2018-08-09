@@ -75,7 +75,7 @@ public class PdfViewerFragment extends Fragment implements BackPressedContract, 
         if (args != null && args.containsKey(ARGS_PDF_URL)) {
             secondPart = args.getString(ARGS_PDF_URL);
         }
-        return new StringBuilder(firstPart).append(secondPart).toString();
+        return String.format("%s%s", firstPart, secondPart);
     }
 
     @Override

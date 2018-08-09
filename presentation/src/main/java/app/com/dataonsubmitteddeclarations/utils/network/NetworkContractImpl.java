@@ -21,13 +21,10 @@ public class NetworkContractImpl implements NetworkContract {
     @Override
     public NetworkData getNetworkData() {
         final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
         final boolean hasInternetConnection =
                 (activeNetworkInfo != null && activeNetworkInfo.isConnected());
-
         final boolean isMobileConnection = (activeNetworkInfo != null
                 && activeNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE);
-
         return new NetworkData(hasInternetConnection, isMobileConnection);
     }
 }

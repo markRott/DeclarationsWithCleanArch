@@ -3,13 +3,7 @@ package app.com.dataonsubmitteddeclarations.di;
 import app.com.dataonsubmitteddeclarations.MyApp;
 import app.com.dataonsubmitteddeclarations.di.components.DaggerMainAppComponent;
 import app.com.dataonsubmitteddeclarations.di.components.MainAppComponent;
-import app.com.dataonsubmitteddeclarations.di.modules.CompositeDisposableModule;
 import app.com.dataonsubmitteddeclarations.di.modules.ContextModule;
-import app.com.dataonsubmitteddeclarations.di.modules.NetworkModule;
-import app.com.dataonsubmitteddeclarations.di.modules.PersonsModule;
-import app.com.dataonsubmitteddeclarations.di.modules.RouterModule;
-import app.com.dataonsubmitteddeclarations.di.modules.ThreadModule;
-import app.com.dataonsubmitteddeclarations.di.modules.UtilsModule;
 
 public class InjectHelper {
 

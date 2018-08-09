@@ -17,8 +17,4 @@ public class UtilsModule {
     public NetworkContract provideNetworkContract(final Context context) {
         return new NetworkContractImpl(context);
     }
-
-    public interface Expose {
-        NetworkContract networkContract();
-    }
 }

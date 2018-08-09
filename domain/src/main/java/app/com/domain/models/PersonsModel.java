@@ -18,10 +18,6 @@ public class PersonsModel implements Serializable {
         this.items = items;
     }
 
-    public PageModel getPageModel() {
-        return pageModel;
-    }
-
     public void setPageModel(PageModel pageModel) {
         this.pageModel = pageModel;
     }
