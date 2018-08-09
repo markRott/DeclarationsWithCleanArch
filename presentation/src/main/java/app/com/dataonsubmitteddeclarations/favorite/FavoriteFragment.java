@@ -26,6 +26,11 @@ public class FavoriteFragment extends BaseSearchFragment {
     @InjectPresenter
     FavoriteSearchPresenter favoriteSearchPresenter;
 
+    @Override
+    protected SearchPresenterContract getPresenter() {
+        return favoriteSearchPresenter;
+    }
+
     @Nullable
     @Override
     public View onCreateView(
@@ -53,15 +58,5 @@ public class FavoriteFragment extends BaseSearchFragment {
                 personAdapter.notifyItemRemoved(index);
             }
         }
-    }
-
-    @Override
-    protected SearchPresenterContract getPresenter() {
-        return favoriteSearchPresenter;
-    }
-
-    @Override
-    public void checkFavoriteState(List<PersonModel> personModelList) {
-        // nothing to do
     }
 }

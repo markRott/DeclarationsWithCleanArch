@@ -19,8 +19,6 @@ import dagger.Provides;
 @Module
 public class PersonsModule {
 
-    //----------------------------------------------------------------------------------------------
-
     @Provides
     @Singleton
     @Named("search")
@@ -34,11 +32,8 @@ public class PersonsModule {
     public FetchPersonsContract provideSearchPersonsInteractor(
             final ThreadContract threadContract,
             @Named("search") final FetchPersonsRepository repository) {
-
         return new FetchPersonsInteractor(threadContract, repository);
     }
-
-    //----------------------------------------------------------------------------------------------
 
     @Provides
     @Singleton
@@ -57,8 +52,6 @@ public class PersonsModule {
         return new FetchPersonsInteractor(threadContract, repository);
     }
 
-    //----------------------------------------------------------------------------------------------
-
     @Provides
     @Singleton
     FavoriteRepository provideFavoriteRepository() {
@@ -72,14 +65,5 @@ public class PersonsModule {
             final FavoriteRepository favoriteRepository) {
 
         return new FavoriteInteractor(threadContract, favoriteRepository);
-    }
-
-    public interface Expose {
-
-        FetchPersonsRepository personRepository();
-
-        FetchPersonsInteractor personsInteractor();
-
-        FavoriteInteractor favoriteInteractor();
     }
 }

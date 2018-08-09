@@ -14,16 +14,24 @@ import java.util.List;
 
 import app.com.dataonsubmitteddeclarations.R;
 import app.com.dataonsubmitteddeclarations.base.BaseSearchFragment;
+import app.com.dataonsubmitteddeclarations.utils.RxBus;
 import app.com.domain.models.PersonModel;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 public class SearchFragment extends BaseSearchFragment {
 
     @InjectPresenter
-    SearchPresenter searchPresenter;//марлен аркадий
+    SearchPresenter searchPresenter;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
+    }
+
+    @Override
+    protected SearchPresenterContract getPresenter() {
+        return searchPresenter;
     }
 
     @Nullable
@@ -38,31 +46,42 @@ public class SearchFragment extends BaseSearchFragment {
     }
 
     @Override
-    public void checkFavoriteState(List<PersonModel> personsFromDatabase) {
+    public void onResume() {
+        super.onResume();
+        favoriteStatusUpdateListener();
+    }
+
+    private void favoriteStatusUpdateListener() {
+        Disposable disposable = RxBus.getInstance().getSubject()
+                .subscribe(
+                        response -> checkFavoriteState((List<PersonModel>) response),
+                        error -> Timber.e(error, "Error: update favorite status"));
+        disposableManager.addDisposable(disposable);
+    }
+
+    private void checkFavoriteState(List<PersonModel> modelList) {
         final List<Integer> updateIndexList = new ArrayList<>();
-        if (personsFromDatabase != null && !personsFromDatabase.isEmpty()) {
+        if (modelList != null && !modelList.isEmpty()) {
             final List<PersonModel> copyAdapterData = new ArrayList<>(personAdapter.getData());
-            personsFromDatabase.retainAll(copyAdapterData);
-            for (PersonModel currModel : personsFromDatabase) {
-                if (currModel == null) continue;
-                if (!personAdapter.getData().contains(currModel)) continue;
-                int index = personAdapter.getData().indexOf(currModel);
-                updateIndexList.add(index);
-                personAdapter.getData().set(index, currModel);
-            }
-            for (Integer index : updateIndexList) {
-                personAdapter.notifyItemChanged(index);
-            }
+            modelList.retainAll(copyAdapterData);
+            setupNewItems(modelList, updateIndexList);
+            updateAdapter(updateIndexList);
         }
     }
 
-    @Override
-    protected SearchPresenterContract getPresenter() {
-        return searchPresenter;
+    private void setupNewItems(List<PersonModel> personsFromDatabase, List<Integer> updateIndexList) {
+        for (PersonModel currModel : personsFromDatabase) {
+            if (currModel == null) continue;
+            if (!personAdapter.getData().contains(currModel)) continue;
+            int index = personAdapter.getData().indexOf(currModel);
+            updateIndexList.add(index);
+            personAdapter.getData().set(index, currModel);
+        }
     }
 
-    @Override
-    protected void removeItemFromFavoriteList(PersonModel personModel) {
-        // nothing to do
+    private void updateAdapter(final List<Integer> updateIndexList) {
+        for (Integer index : updateIndexList) {
+            personAdapter.notifyItemChanged(index);
+        }
     }
 }

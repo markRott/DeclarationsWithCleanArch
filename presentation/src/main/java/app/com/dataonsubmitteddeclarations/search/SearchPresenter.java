@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import app.com.dataonsubmitteddeclarations.base.BaseSearchPresenter;
 import app.com.dataonsubmitteddeclarations.di.InjectHelper;
+import app.com.dataonsubmitteddeclarations.utils.RxBus;
 import app.com.domain.interactors.FavoriteInteractor;
 import app.com.domain.interactors.FetchPersonsContract;
 import app.com.domain.models.PersonModel;
@@ -21,7 +22,6 @@ public class SearchPresenter extends BaseSearchPresenter implements SearchPresen
 
     @Inject
     FavoriteInteractor favoriteInteractor;
-
     @Inject
     @Named("search")
     FetchPersonsContract fetchPersonsInteractor;
@@ -49,10 +49,10 @@ public class SearchPresenter extends BaseSearchPresenter implements SearchPresen
     public void lifeSearchByInputText(final Flowable<String> textViewFlowable) {
         Disposable disposable = getDataFromNetwork(textViewFlowable)
                 .flatMap(personModelList -> {
-                    successResponse(personModelList);
+                    successFetchPersonsResponse(personModelList);
                     return getDataFromDatabase();
                 }).subscribe(
-                        getViewState()::checkFavoriteState
+                        personModelList -> RxBus.getInstance().sendData(personModelList)
                         , error -> Timber.e(error, "Error get data from database"));
         disposableManager.addDisposable(disposable);
     }
@@ -69,13 +69,7 @@ public class SearchPresenter extends BaseSearchPresenter implements SearchPresen
     }
 
     private Flowable<List<PersonModel>> getDataFromDatabase() {
-        return fetchPersonsFromDatabase.fetchPersonsByName("")
-                .map((List<PersonModel> personModelList) -> {
-                    for (PersonModel currModel : personModelList) {
-                        currModel.setFromLbd(true);
-                    }
-                    return personModelList;
-                });
+        return fetchPersonsFromDatabase.fetchPersonsByName("");
     }
 }
 

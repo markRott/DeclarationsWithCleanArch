@@ -1,9 +1,11 @@
 package app.com.dataonsubmitteddeclarations.base;
 
+import java.util.Collections;
 import java.util.List;
 
 import app.com.dataonsubmitteddeclarations.search.SearchContract;
 import app.com.dataonsubmitteddeclarations.search.SearchPresenterContract;
+import app.com.dataonsubmitteddeclarations.utils.RxBus;
 import app.com.domain.interactors.FavoriteInteractor;
 import app.com.domain.interactors.FetchPersonsContract;
 import app.com.domain.models.PersonModel;
@@ -31,7 +33,7 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract>
                     return getPersonList(tmpQuery);
                 })
                 .subscribe(
-                        this::successResponse,
+                        this::successFetchPersonsResponse,
                         error -> {
                             Timber.e(error, "lifeSearchByInputText Error fetch persons data by name ");
                             showNoDataView();
@@ -59,7 +61,7 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract>
                 });
     }
 
-    protected void successResponse(final List<PersonModel> personModelList) {
+    protected void successFetchPersonsResponse(final List<PersonModel> personModelList) {
         if (personModelList == null || personModelList.isEmpty()) {
             showNoDataView();
             return;
@@ -86,17 +88,16 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract>
         final Disposable disposable = getFavoriteInteractor()
                 .favoriteRequest(personModel)
                 .subscribe(
-                        this::hideFavoriteProgressBar,
+                        (PersonModel responseModel) -> {
+                            getViewState().hideFavoriteProgressAndUpdateUi(responseModel);
+                            RxBus.getInstance().sendData(Collections.singletonList(responseModel));
+                        },
                         error -> {
-                            hideFavoriteProgressBar(personModel);
+                            getViewState().hideFavoriteProgressAndUpdateUi(personModel);
                             Timber.e(error, "Favorite request error");
                         }
                 );
         disposableManager.addDisposable(disposable);
-    }
-
-    private void hideFavoriteProgressBar(final PersonModel personModel) {
-        getViewState().hideFavoriteProgress(personModel);
     }
 
     protected abstract FetchPersonsContract getFetchPersonsContract();

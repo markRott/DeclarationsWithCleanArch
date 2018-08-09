@@ -54,8 +54,4 @@ public class NetworkModule {
         builder.writeTimeout(30, TimeUnit.SECONDS);
         return builder.build();
     }
-
-    public interface Expose {
-        ApplicationApi applicationApi();
-    }
 }

@@ -25,7 +25,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
         return Single.fromCallable(new Callable<PersonModel>() {
             @Override
             public PersonModel call() throws InterruptedException {
-                Thread.sleep(5000);
+                Thread.sleep(9000);// fake request
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 realm.copyToRealmOrUpdate(transform(personModel));
@@ -41,7 +41,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
         return Single.fromCallable(new Callable<PersonModel>() {
             @Override
             public PersonModel call() throws InterruptedException {
-                Thread.sleep(5000);
+                Thread.sleep(9000);// fake request
                 final Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 final RealmResults<DatabasePersonModel> result = getAllObjects(realm, personModel);

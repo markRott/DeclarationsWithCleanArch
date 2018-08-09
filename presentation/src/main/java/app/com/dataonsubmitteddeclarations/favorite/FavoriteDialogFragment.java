@@ -143,6 +143,5 @@ public class FavoriteDialogFragment extends DialogFragment {
         favoriteIntent.putExtra(SEND_FAVORITE_MODEL, personModel);
         getTargetFragment().onActivityResult(
                 getTargetRequestCode(), Activity.RESULT_OK, favoriteIntent);
-
     }
 }

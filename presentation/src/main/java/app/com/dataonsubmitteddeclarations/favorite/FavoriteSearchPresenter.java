@@ -26,7 +26,6 @@ public class FavoriteSearchPresenter extends BaseSearchPresenter implements Sear
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         InjectHelper.getMainAppComponent().inject(this);
-
         getFavoritePersonsFromDatabase();
     }
 
@@ -43,7 +42,7 @@ public class FavoriteSearchPresenter extends BaseSearchPresenter implements Sear
     private void getFavoritePersonsFromDatabase() {
         Disposable disposable = getPersonList("")
                 .subscribe(
-                        this::successResponse,
+                        this::successFetchPersonsResponse,
                         error -> {
                             Timber.e(error, "Get favorite persons from database");
                             showNoDataView();

@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -55,24 +54,9 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
     private PersonModel favoritePersonModel;
 
     @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
-    }
-
-    private void initRecyclerView() {
-        if (recyclerView != null) {
-            personAdapter = new PersonAdapter(getContext());
-            personAdapter.setTouchPdfIconListener(this);
-            personAdapter.setTouchFavoriteListener(this);
-            recyclerView.setAdapter(personAdapter);
-        }
     }
 
     @Override
@@ -82,23 +66,16 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
         ViewUtils.hideKeyboardFrom(getContext(), getView());
     }
 
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
+    }
+
     @OnClick(R.id.iv_clear_text)
     public void clearEditText() {
         edtSearch.setText("");
         getPresenter().dropCurrentQuery();
-    }
-
-    protected void enableLifeSearch() {
-        Flowable<String> textViewFlowable =
-                RxTextView
-                        .textChanges(edtSearch)
-                        .debounce(500, TimeUnit.MILLISECONDS)
-                        .filter(charSequence -> charSequence.length() > 3)
-                        .map(CharSequence::toString)
-                        .distinctUntilChanged()
-                        .toFlowable(BackpressureStrategy.LATEST);
-
-        getPresenter().lifeSearchByInputText(textViewFlowable);
     }
 
     @Override
@@ -142,34 +119,8 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
     }
 
     @Override
-    public void hideFavoriteProgress(final PersonModel personModel) {
+    public void hideFavoriteProgressAndUpdateUi(final PersonModel personModel) {
         findItemAndSetupProgressBarState(personModel, !SHOW_FAVORITE_PROGRESS_BAR);
-    }
-
-    private void findItemAndSetupProgressBarState(final PersonModel personModel, boolean visibilityState) {
-        final int itemPosition = personModel.getPositionInAdapter();
-        if (itemPosition >= 0) {
-            personModel.setProgressBarVisibilityState(visibilityState);
-            personAdapter.notifyItemChanged(itemPosition);
-            removeItemFromFavoriteList(personModel);
-        } else {
-            Timber.e("Wrong item position");
-        }
-    }
-
-    @Override
-    public void touchPdfIcon(PersonModel personModel, int position) {
-        if (getManager() == null) return;
-        final RouterData data = RouterData.RouterDataBuilder
-                .builder()
-                .setFragmentManager(getManager())
-                .setPersonModel(personModel)
-                .build();
-        router.openPdfFragment(data);
-    }
-
-    private FragmentManager getManager() {
-        return getActivity().getSupportFragmentManager();
     }
 
     @Override
@@ -185,6 +136,17 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
     }
 
     @Override
+    public void touchPdfIcon(PersonModel personModel, int position) {
+        if (getManager() == null) return;
+        final RouterData data = RouterData.RouterDataBuilder
+                .builder()
+                .setFragmentManager(getManager())
+                .setPersonModel(personModel)
+                .build();
+        router.openPdfFragment(data);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Router.FAVORITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             final Bundle args = data.getExtras();
@@ -197,7 +159,47 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
         }
     }
 
+    private void initRecyclerView() {
+        if (recyclerView != null) {
+            personAdapter = new PersonAdapter(getContext());
+            personAdapter.setTouchPdfIconListener(this);
+            personAdapter.setTouchFavoriteListener(this);
+            recyclerView.setAdapter(personAdapter);
+        }
+    }
+
+    protected void enableLifeSearch() {
+        Flowable<String> textViewFlowable =
+                RxTextView
+                        .textChanges(edtSearch)
+                        .debounce(500, TimeUnit.MILLISECONDS)
+                        .filter(charSequence -> charSequence.length() > 3)
+                        .map(CharSequence::toString)
+                        .distinctUntilChanged()
+                        .toFlowable(BackpressureStrategy.LATEST);
+
+        getPresenter().lifeSearchByInputText(textViewFlowable);
+    }
+
+    private void findItemAndSetupProgressBarState(final PersonModel personModel, boolean visibilityState) {
+        if (personModel == null) return;
+        final int itemPosition = personModel.getPositionInAdapter();
+        if (itemPosition >= 0) {
+            personModel.setProgressBarVisibilityState(visibilityState);
+            personAdapter.notifyItemChanged(itemPosition);
+            removeItemFromFavoriteList(personModel);
+        } else {
+            Timber.e("Wrong item position");
+        }
+    }
+
+    private FragmentManager getManager() {
+        return getActivity().getSupportFragmentManager();
+    }
+
     protected abstract SearchPresenterContract getPresenter();
 
-    protected abstract void removeItemFromFavoriteList(final PersonModel personModel);
+    protected void removeItemFromFavoriteList(final PersonModel personModel) {
+        // realization in child classes
+    }
 }

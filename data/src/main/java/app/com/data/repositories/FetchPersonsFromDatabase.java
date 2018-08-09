@@ -1,6 +1,5 @@
 package app.com.data.repositories;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -11,7 +10,6 @@ import app.com.domain.interfaces.FetchPersonsRepository;
 import app.com.domain.models.PersonModel;
 import io.reactivex.Flowable;
 import io.realm.Realm;
-import timber.log.Timber;
 
 public class FetchPersonsFromDatabase implements FetchPersonsRepository {
 
@@ -44,8 +42,8 @@ public class FetchPersonsFromDatabase implements FetchPersonsRepository {
                 .findAll();
     }
 
-    private final List<PersonModel> convertDatabaseModelToDomain(final List<DatabasePersonModel> result){
-        if(result == null) return Collections.emptyList();
+    private List<PersonModel> convertDatabaseModelToDomain(final List<DatabasePersonModel> result) {
+        if (result == null) return Collections.emptyList();
         final DatabasePersonModelToDomain converter = new DatabasePersonModelToDomain();
         return converter.transform(result);
     }

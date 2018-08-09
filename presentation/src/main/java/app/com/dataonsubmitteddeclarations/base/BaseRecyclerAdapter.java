@@ -27,28 +27,8 @@ public abstract class BaseRecyclerAdapter<Item, Holder extends RecyclerView.View
         notifyDataSetChanged();
     }
 
-    public void addData(Item data) {
-        this.data.add(data);
-        notifyDataSetChanged();
-    }
-
-    public void addAllData(@NonNull List<Item> newData) {
-        this.data.addAll(newData);
-    }
-
     public List<Item> getData() {
         return data == null ? Collections.emptyList() : data;
-    }
-
-    public boolean isEmpty() {
-        return data.isEmpty();
-    }
-
-    public void clear() {
-        if (data != null) {
-            data.clear();
-            notifyDataSetChanged();
-        }
     }
 
     public Context getContext() {
