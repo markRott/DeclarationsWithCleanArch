@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import java.util.List;
+
 import app.com.dataonsubmitteddeclarations.R;
 import app.com.dataonsubmitteddeclarations.base.BaseSearchFragment;
 import app.com.dataonsubmitteddeclarations.search.SearchPresenterContract;
@@ -56,5 +58,10 @@ public class FavoriteFragment extends BaseSearchFragment {
     @Override
     protected SearchPresenterContract getPresenter() {
         return favoriteSearchPresenter;
+    }
+
+    @Override
+    public void checkFavoriteState(List<PersonModel> personModelList) {
+        // nothing to do
     }
 }

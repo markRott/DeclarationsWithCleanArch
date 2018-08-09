@@ -11,18 +11,18 @@ import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
-public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> implements SearchPresenterContract {
+public abstract class BaseSearchPresenter extends BasePresenter<SearchContract>
+        implements SearchPresenterContract {
 
-    private String currQuery = "";
+    protected String currQuery = "";
 
-    @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
+    public void dropCurrentQuery() {
+        currQuery = "";
     }
 
     @Override
     public void lifeSearchByInputText(final Flowable<String> textViewFlowable) {
-        disposableManager.addDisposable(textViewFlowable
+        Disposable searchDisposable = textViewFlowable
                 .filter(this::isEqualQuery)
                 .observeOn(threadContract.ui())
                 .switchMap(tmpQuery -> {
@@ -35,19 +35,15 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> 
                         error -> {
                             Timber.e(error, "lifeSearchByInputText Error fetch persons data by name ");
                             showNoDataView();
-                        })
-        );
+                        });
+        disposableManager.addDisposable(searchDisposable);
     }
 
-    public void dropCurrentQuery() {
-        currQuery = "";
-    }
-
-    private boolean isEqualQuery(final String tmpQuery) {
+    protected boolean isEqualQuery(final String tmpQuery) {
         return !currQuery.equals(tmpQuery);
     }
 
-    private void startRequestUpdateUi() {
+    protected void startRequestUpdateUi() {
         getViewState().hideNoDataView();
         getViewState().hideList();
         getViewState().showProgress();
@@ -58,15 +54,9 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> 
                 .fetchPersonsByName(tmpQuery)
                 .onErrorResumeNext(throwable -> {
                     showNoDataView();
-                    Timber.e(throwable, "Fetch persons by name");
+                    Timber.e(throwable, "Error fetch persons by name");
                     return Flowable.empty();
                 });
-    }
-
-    protected void showNoDataView() {
-        getViewState().hideProgress();
-        getViewState().hideList();
-        getViewState().showNoDataView();
     }
 
     protected void successResponse(final List<PersonModel> personModelList) {
@@ -82,6 +72,12 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract> 
         getViewState().hideNoDataView();
         getViewState().hideProgress();
         getViewState().showList();
+    }
+
+    protected void showNoDataView() {
+        getViewState().hideProgress();
+        getViewState().hideList();
+        getViewState().showNoDataView();
     }
 
     @Override

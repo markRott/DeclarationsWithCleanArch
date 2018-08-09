@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -15,6 +14,7 @@ import android.widget.ProgressBar;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +30,6 @@ import app.com.dataonsubmitteddeclarations.search.adapter.listeners.TouchPdfIcon
 import app.com.dataonsubmitteddeclarations.utils.ViewUtils;
 import app.com.domain.models.PersonModel;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.BackpressureStrategy;
@@ -54,17 +53,6 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
     protected PersonAdapter personAdapter;
     protected Unbinder unbinder;
     private PersonModel favoritePersonModel;
-
-//    @Nullable
-//    @Override
-//    public View onCreateView(
-//            @NonNull LayoutInflater inflater,
-//            @Nullable ViewGroup container,
-//            @Nullable Bundle savedInstanceState) {
-//        final View view = inflater.inflate(R.layout.fragment_search, container, false);
-//        unbinder = ButterKnife.bind(this, view);
-//        return view;
-//    }
 
     @Override
     public void onDestroyView() {

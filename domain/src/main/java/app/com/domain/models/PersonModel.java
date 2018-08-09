@@ -21,6 +21,8 @@ public class PersonModel implements Serializable {
     private boolean removeFavoriteItem;
     private boolean progressBarVisibilityState;
 
+    private boolean fromLbd;
+
     public String getId() {
         return id;
     }
@@ -131,6 +133,14 @@ public class PersonModel implements Serializable {
 
     public void setRemoveFavoriteItem(boolean removeFavoriteItem) {
         this.removeFavoriteItem = removeFavoriteItem;
+    }
+
+    public boolean isFromLbd() {
+        return fromLbd;
+    }
+
+    public void setFromLbd(boolean fromLbd) {
+        this.fromLbd = fromLbd;
     }
 
     @Override
