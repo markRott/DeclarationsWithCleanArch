@@ -2,6 +2,7 @@ package app.com.dataonsubmitteddeclarations.search;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 import java.util.List;
@@ -28,4 +29,7 @@ public interface SearchContract extends MvpView {
     void showFavoriteProgress(final PersonModel personModel);
 
     void hideFavoriteProgressAndUpdateUi(final PersonModel personModel);
+
+    @StateStrategyType(value = OneExecutionStateStrategy.class)
+    void showNoInternetConnection();
 }

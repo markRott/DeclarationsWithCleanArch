@@ -20,5 +20,7 @@
     <string name="title_comment">Комментарий: %1$s</string>
     <string name="search_screen">Экран поиска</string>
     <string name="favorite_screen">Экран избранное</string>
+    <string name="has_internet_connection">Has internet connection</string>
+    <string name="no_internet_connection">No internet connection</string>
 
 </resources>

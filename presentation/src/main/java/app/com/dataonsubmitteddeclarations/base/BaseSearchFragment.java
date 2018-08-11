@@ -26,6 +26,7 @@ import app.com.dataonsubmitteddeclarations.search.SearchPresenterContract;
 import app.com.dataonsubmitteddeclarations.search.adapter.PersonAdapter;
 import app.com.dataonsubmitteddeclarations.search.adapter.listeners.TouchFavoriteListener;
 import app.com.dataonsubmitteddeclarations.search.adapter.listeners.TouchPdfIconListener;
+import app.com.dataonsubmitteddeclarations.utils.ToastFactory;
 import app.com.dataonsubmitteddeclarations.utils.ViewUtils;
 import app.com.domain.models.PersonModel;
 import butterknife.BindView;
@@ -157,6 +158,11 @@ public abstract class BaseSearchFragment extends BaseFragment implements SearchC
                 getPresenter().favoriteRequest(favoritePersonModel);
             }
         }
+    }
+
+    @Override
+    public void showNoInternetConnection() {
+        ToastFactory.showToast(getContext(), R.string.no_internet_connection);
     }
 
     private void initRecyclerView() {

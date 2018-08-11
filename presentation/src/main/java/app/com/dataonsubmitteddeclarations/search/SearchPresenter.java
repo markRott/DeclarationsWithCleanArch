@@ -15,6 +15,7 @@ import app.com.domain.interactors.FetchPersonsContract;
 import app.com.domain.models.PersonModel;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import timber.log.Timber;
 
 @InjectViewState
