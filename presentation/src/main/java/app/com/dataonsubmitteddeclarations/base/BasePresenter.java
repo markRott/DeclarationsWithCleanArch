@@ -6,6 +6,7 @@ import com.arellomobile.mvp.MvpView;
 import javax.inject.Inject;
 
 import app.com.dataonsubmitteddeclarations.managers.CompositeDisposableManager;
+import app.com.dataonsubmitteddeclarations.utils.network.NetworkContract;
 import app.com.domain.interfaces.ThreadContract;
 
 public abstract class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
@@ -14,6 +15,8 @@ public abstract class BasePresenter<View extends MvpView> extends MvpPresenter<V
     protected CompositeDisposableManager disposableManager;
     @Inject
     protected ThreadContract threadContract;
+    @Inject
+    protected NetworkContract networkContract;
 
     @Override
     public void onDestroy() {

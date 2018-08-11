@@ -1,5 +1,7 @@
 package app.com.dataonsubmitteddeclarations.base;
 
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,6 +58,7 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract>
                 .fetchPersonsByName(tmpQuery)
                 .onErrorResumeNext(throwable -> {
                     showNoDataView();
+                    handleException(throwable);
                     Timber.e(throwable, "Error fetch persons by name");
                     return Flowable.empty();
                 });
@@ -98,6 +101,12 @@ public abstract class BaseSearchPresenter extends BasePresenter<SearchContract>
                         }
                 );
         disposableManager.addDisposable(disposable);
+    }
+
+    private void handleException(Throwable throwable) {
+        if (throwable instanceof UnknownHostException || throwable instanceof SocketTimeoutException) {
+            getViewState().showNoInternetConnection();
+        }
     }
 
     protected abstract FetchPersonsContract getFetchPersonsContract();
